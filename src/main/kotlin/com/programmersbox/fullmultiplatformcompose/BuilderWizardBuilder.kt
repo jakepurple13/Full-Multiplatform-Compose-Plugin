@@ -38,12 +38,12 @@ class BuilderWizardBuilder : ModuleBuilder() {
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
         }
-
         modifiableRootModel.project.backgroundTask("Setting up project") {
             try {
-                val generator = CommonGenerator(params)
+                val generator = CommonGenerator(params, modifiableRootModel.project.name)
                 generator.generate(root)
             } catch (ex: Exception) {
+                ex.printStackTrace()
             }
             installGradleWrapper(modifiableRootModel.project)
         }

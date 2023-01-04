@@ -9,7 +9,8 @@ internal const val SHARED_NAME = "SHARED_NAME"
 internal const val PACKAGE_NAME = "PACKAGE_NAME"
 
 class CommonGenerator(
-    private val params: BuilderParams
+    private val params: BuilderParams,
+    private val projectName: String
 ) {
     private val androidGenerator = AndroidGenerator(params)
     private val webGenerator = WebGenerator(params)
@@ -39,13 +40,13 @@ class CommonGenerator(
                     )
                 )
 
-                file2(
+                file(
                     "settings.gradle.kts",
                     "project_settings.gradle.kts",
                     mapOf(
                         PACKAGE_NAME to params.packageName,
                         SHARED_NAME to params.sharedName,
-                        "APP_NAME" to params.android.appName.replace(" ", "_"),
+                        "APP_NAME" to projectName,
                         "HAS_ANDROID" to params.hasAndroid,
                         "HAS_DESKTOP" to params.hasDesktop,
                         "HAS_IOS" to params.hasiOS,

@@ -9,7 +9,7 @@ plugins {
     #end
 }
 
-group = ${PACKAGE_NAME}
+group = "${PACKAGE_NAME}"
 version = "1.0-SNAPSHOT"
 
 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)

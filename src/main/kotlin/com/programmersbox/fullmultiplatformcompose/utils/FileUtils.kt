@@ -44,28 +44,6 @@ fun File.file(name: String, templateName: String, attributes: Map<String, Any> =
     file.writeText(data)
 }
 
-fun File.file2(name: String, templateName: String, attributes: Map<String, Any> = emptyMap()) {
-    val file = File(this, name)
-    if (!file.exists()) {
-        file.createNewFile()
-    }
-    val data = getTemplateData2(templateName, attributes)
-    println(data)
-    file.writeText(data)
-}
-
-private fun getTemplateData2(templateName: String, attributes: Map<String, Any> = emptyMap()): String {
-    val template = FileTemplateManager
-        .getDefaultInstance()
-        .getInternalTemplate(templateName)
-    println(template.text)
-    return if (attributes.isEmpty()) {
-        template.text
-    } else {
-        template.getText(attributes)
-    }
-}
-
 private fun getTemplateData(templateName: String, attributes: Map<String, Any> = emptyMap()): String {
     val template = FileTemplateManager
         .getDefaultInstance()
