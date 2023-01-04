@@ -1,0 +1,11 @@
+package ${PACKAGE_NAME}.${SHARED_NAME}
+
+import androidx.compose.runtime.Composable
+import androidx.compose.material.Text
+
+public expect fun getPlatformName(): String
+
+@Composable
+public fun App() {
+    Text(getPlatformName())
+}

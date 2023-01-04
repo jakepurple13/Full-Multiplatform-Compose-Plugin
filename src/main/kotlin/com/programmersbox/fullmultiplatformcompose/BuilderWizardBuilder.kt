@@ -22,10 +22,7 @@ import java.io.File
 class BuilderWizardBuilder : ModuleBuilder() {
     override fun getModuleType(): ModuleType<*> = BuilderModuleType()
 
-    var hasAndroid: Boolean = false
-    var hasWeb: Boolean = false
-    var hasiOS: Boolean = false
-    var hasDesktop: Boolean = false
+    val params = BuilderParams()
 
     override fun setupRootModel(modifiableRootModel: ModifiableRootModel) {
         val root = createAndGetRoot() ?: return
@@ -44,12 +41,8 @@ class BuilderWizardBuilder : ModuleBuilder() {
 
         modifiableRootModel.project.backgroundTask("Setting up project") {
             try {
-                val generator = CommonGenerator(
-                    hasAndroid = hasAndroid,
-                    hasDesktop = hasDesktop,
-                    hasiOS = hasiOS,
-                    hasWeb = hasWeb
-                )
+                val generator = CommonGenerator(params)
+                generator.generate(root)
             } catch (ex: Exception) {
             }
             installGradleWrapper(modifiableRootModel.project)
@@ -75,7 +68,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
     ): Array<ModuleWizardStep> {
         //TODO: Second step will be actual text info like package names
         return arrayOf(
-
+            SecondStep(this)
         )
     }
 

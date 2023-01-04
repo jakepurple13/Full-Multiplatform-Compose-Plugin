@@ -1,0 +1,11 @@
+import androidx.compose.ui.window.Window
+import ${PACKAGE_NAME}.${SHARED_NAME}.UIShow
+import org.jetbrains.skiko.wasm.onWasmReady
+
+fun main() {
+    onWasmReady {
+        Window("${APP_NAME}") {
+            UIShow()
+        }
+    }
+}

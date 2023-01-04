@@ -1,0 +1,113 @@
+plugins {
+    kotlin("multiplatform")
+    id("org.jetbrains.compose")
+    #if (${HAS_ANDROID})
+    id("com.android.library")
+    #end
+    #if (${HAS_IOS})
+    kotlin("native.cocoapods")
+    #end
+}
+
+group = ${PACKAGE_NAME}
+version = "1.0-SNAPSHOT"
+
+@OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+kotlin {
+#if (${HAS_ANDROID})
+    android()
+#end
+#if (${HAS_DESKTOP})
+    jvm("desktop")
+#end
+#if (${HAS_WEB})
+    js(IR) {
+        browser()
+    }
+#end
+#if (${HAS_IOS})
+    ios()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    cocoapods {
+        summary = "Some description for the Shared Module"
+        homepage = "Link to the Shared Module homepage"
+        version = "1.0"
+        ios.deploymentTarget = "14.1"
+        podfile = project.file("../iosApp/Podfile")
+        framework {
+            baseName = "${SHARED_NAME}"
+            isStatic = true
+        }
+        extraSpecAttributes["resources"] = "['src/${SHARED_NAME}Main/resources/**', 'src/iosMain/resources/**']"
+    }
+#end
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(compose.runtime)
+                api(compose.ui)
+                api(compose.foundation)
+                api(compose.materialIconsExtended)
+                api(compose.material)
+            }
+        }
+        #if (${HAS_ANDROID})
+        val androidMain by getting {
+            dependencies {
+                api("androidx.appcompat:appcompat:1.5.1")
+                api("androidx.core:core-ktx:1.9.0")
+            }
+        }
+        #end
+
+        #if (${HAS_DESKTOP})
+        val desktopMain by getting {
+            dependencies {
+                api(compose.preview)
+            }
+        }
+        #end
+
+        #if (${HAS_WEB})
+        val jsMain by getting {
+            dependencies {
+                api(compose.web.core)
+            }
+        }
+        #end
+
+        #if (${HAS_IOS})
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by getting {
+            dependencies {
+
+            }
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+        }
+        #end
+    }
+
+    explicitApi()
+}
+
+#if (${HAS_ANDROID})
+android {
+    compileSdk = 33
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdk = ${MINSDK}
+        targetSdk = 33
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+#end
