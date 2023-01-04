@@ -1,11 +1,28 @@
 package ${PACKAGE_NAME}.${SHARED_NAME}
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.material.Text
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 
 public expect fun getPlatformName(): String
 
 @Composable
 public fun App() {
-    Text(getPlatformName())
+    MaterialTheme(
+        colors = if(isSystemInDarkTheme()) darkColors() else lightColors()
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(getPlatformName())
+        }
+    }
 }

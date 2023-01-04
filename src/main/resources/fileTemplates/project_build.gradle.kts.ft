@@ -1,5 +1,5 @@
-group "${PACKAGE_NAME}"
-version "1.0-SNAPSHOT"
+group = "${PACKAGE_NAME}"
+version = "1.0-SNAPSHOT"
 
 allprojects {
     repositories {
