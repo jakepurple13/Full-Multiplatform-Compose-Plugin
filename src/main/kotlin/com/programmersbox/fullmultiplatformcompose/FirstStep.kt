@@ -10,6 +10,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.programmersbox.fullmultiplatformcompose.utils.CreateComposePanel
+import org.jetbrains.skiko.OS
+import org.jetbrains.skiko.hostOs
 import javax.swing.JComponent
 
 class FirstStep(
@@ -25,7 +27,9 @@ class FirstStep(
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             CheckRow("Include Android", hasAndroid) { hasAndroid = it }
             CheckRow("Include Desktop", hasDesktop) { hasDesktop = it }
-            CheckRow("Include iOS", hasiOS) { hasiOS = it }
+            if (hostOs == OS.MacOS) {
+                CheckRow("Include iOS", hasiOS) { hasiOS = it }
+            }
             CheckRow("Include Web", hasWeb) { hasWeb = it }
         }
     }

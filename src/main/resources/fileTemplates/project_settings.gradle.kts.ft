@@ -23,13 +23,10 @@ rootProject.name = "${APP_NAME}"
 #if (${HAS_ANDROID})
 include(":android")
 #end
-
 #if (${HAS_DESKTOP})
 include(":desktop")
 #end
-
 #if (${HAS_WEB})
 include(":jsApp")
 #end
-
 include(":${SHARED_NAME}")
