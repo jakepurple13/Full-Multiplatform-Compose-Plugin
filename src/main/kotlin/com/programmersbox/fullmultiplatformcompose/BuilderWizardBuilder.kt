@@ -1,5 +1,6 @@
 package com.programmersbox.fullmultiplatformcompose
 
+import com.intellij.ide.projectWizard.ProjectSettingsStep
 import com.intellij.ide.util.projectWizard.ModuleBuilder
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.ide.util.projectWizard.WizardContext
@@ -15,9 +16,12 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.programmersbox.fullmultiplatformcompose.generators.CommonGenerator
+import com.programmersbox.fullmultiplatformcompose.steps.FirstStep
+import com.programmersbox.fullmultiplatformcompose.steps.SecondStep
 import com.programmersbox.fullmultiplatformcompose.utils.backgroundTask
 import com.programmersbox.fullmultiplatformcompose.utils.runGradle
 import java.io.File
+
 
 class BuilderWizardBuilder : ModuleBuilder() {
     override fun getModuleType(): ModuleType<*> = BuilderModuleType()
@@ -59,17 +63,27 @@ class BuilderWizardBuilder : ModuleBuilder() {
     }
 
     override fun getCustomOptionsStep(context: WizardContext?, parentDisposable: Disposable?): ModuleWizardStep {
-        return FirstStep(this)
+        return ProjectSettingsStep(context)
     }
 
     override fun createWizardSteps(
         wizardContext: WizardContext,
         modulesProvider: ModulesProvider
     ): Array<ModuleWizardStep> {
-        //TODO: Second step will be actual text info like package names
         return arrayOf(
+            FirstStep(this),
             SecondStep(this)
         )
     }
+
+    override fun getIgnoredSteps(): MutableList<Class<out ModuleWizardStep>> {
+        return mutableListOf(ProjectSettingsStep::class.java)
+    }
+
+    /*override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? {
+        settingsStep.addSettingsField("HI", JTextField())
+
+        return super.modifySettingsStep(settingsStep)
+    }*/
 
 }

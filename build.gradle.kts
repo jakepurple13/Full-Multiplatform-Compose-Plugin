@@ -26,6 +26,7 @@ intellij {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation(compose.materialIconsExtended)
 }
 
 compose {

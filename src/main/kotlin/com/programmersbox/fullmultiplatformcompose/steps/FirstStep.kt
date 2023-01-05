@@ -1,14 +1,13 @@
-package com.programmersbox.fullmultiplatformcompose
+package com.programmersbox.fullmultiplatformcompose.steps
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
+import com.programmersbox.fullmultiplatformcompose.BuilderParams
+import com.programmersbox.fullmultiplatformcompose.BuilderWizardBuilder
 import com.programmersbox.fullmultiplatformcompose.utils.CreateComposePanel
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
@@ -23,16 +22,20 @@ class FirstStep(
     private var hasDesktop by mutableStateOf(params.hasDesktop)
     private var hasWeb by mutableStateOf(params.hasWeb)
 
-    override fun getComponent(): JComponent = CreateComposePanel {
-        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            CheckRow("Include Android", hasAndroid) { hasAndroid = it }
-            CheckRow("Include Desktop", hasDesktop) { hasDesktop = it }
-            if (hostOs == OS.MacOS) {
-                CheckRow("Include iOS", hasiOS) { hasiOS = it }
+    private val view by lazy {
+        CreateComposePanel(isStepVisible) {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                CheckRow("Include Android", hasAndroid) { hasAndroid = it }
+                CheckRow("Include Desktop", hasDesktop) { hasDesktop = it }
+                if (hostOs == OS.MacOS) {
+                    CheckRow("Include iOS", hasiOS) { hasiOS = it }
+                }
+                CheckRow("Include Web", hasWeb) { hasWeb = it }
             }
-            CheckRow("Include Web", hasWeb) { hasWeb = it }
         }
     }
+
+    override fun getComponent(): JComponent = view
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
