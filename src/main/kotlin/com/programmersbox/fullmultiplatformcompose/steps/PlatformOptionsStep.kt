@@ -19,7 +19,7 @@ import com.programmersbox.fullmultiplatformcompose.BuilderWizardBuilder
 import com.programmersbox.fullmultiplatformcompose.utils.CreateComposePanel
 import javax.swing.JComponent
 
-class SecondStep(
+class PlatformOptionsStep(
     private val builder: BuilderWizardBuilder,
     private val params: BuilderParams = builder.params
 ) : ModuleWizardStep() {
@@ -30,63 +30,77 @@ class SecondStep(
     private var androidName by mutableStateOf(params.android.appName)
     private var androidMinimumSdk by mutableStateOf(params.android.minimumSdk)
 
+    private var hideMe by mutableStateOf(true)
+
     private val view by lazy {
-        CreateComposePanel(isStepVisible) {
-            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        CreateComposePanel {
+            if (hideMe) {
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
 
-                CreationItem("Common", true) {
-                    OutlinedTextField(
-                        value = sharedName,
-                        onValueChange = { sharedName = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text("Shared Name") }
-                    )
-
-                    Spacer(Modifier.height(2.dp))
-
-                    OutlinedTextField(
-                        value = packageName,
-                        onValueChange = { packageName = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text("Package Name") }
-                    )
-                }
-
-                CreationItem("Android", params.hasAndroid) {
-                    OutlinedTextField(
-                        value = androidName,
-                        onValueChange = { androidName = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text("App Name") }
-                    )
-
-                    Spacer(Modifier.height(2.dp))
-
-                    OutlinedTextField(
-                        value = androidMinimumSdk.toString(),
-                        onValueChange = { androidMinimumSdk = it.toInt().coerceIn(1, 33) },
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text("Minimum Sdk") },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
+                    CreationItem("Common", true) {
+                        OutlinedTextField(
+                            value = sharedName,
+                            onValueChange = { sharedName = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("Shared Name") }
                         )
-                    )
+
+                        Spacer(Modifier.height(2.dp))
+
+                        OutlinedTextField(
+                            value = packageName,
+                            onValueChange = { packageName = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("Package Name") }
+                        )
+                    }
+
+                    CreationItem("Android", params.hasAndroid) {
+                        OutlinedTextField(
+                            value = androidName,
+                            onValueChange = { androidName = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("App Name") }
+                        )
+
+                        Spacer(Modifier.height(2.dp))
+
+                        OutlinedTextField(
+                            value = androidMinimumSdk.toString(),
+                            onValueChange = { androidMinimumSdk = it.toInt().coerceIn(1, 33) },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("Minimum Sdk") },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                            )
+                        )
+                    }
+
+                    CreationItem("iOS", params.hasiOS) {
+
+                    }
+
+                    CreationItem("Web", params.hasWeb) {
+
+                    }
+
+                    CreationItem("Desktop", params.hasDesktop) {
+
+                    }
+
                 }
-
-                CreationItem("iOS", params.hasiOS) {
-
-                }
-
-                CreationItem("Web", params.hasWeb) {
-
-                }
-
-                CreationItem("Desktop", params.hasDesktop) {
-
-                }
-
             }
         }
+    }
+
+    override fun onStepLeaving() {
+        hideMe = false
+        println("LEAVING Second!!!")
+    }
+
+    override fun _init() {
+        println("INIT Second!!!")
+        hideMe = true
     }
 
     override fun getComponent(): JComponent = view

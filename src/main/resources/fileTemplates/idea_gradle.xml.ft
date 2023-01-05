@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            #if (${HAS_ANDROID})
+            <option value="$PROJECT_DIR$/android" />
+            #end
+            <option value="$PROJECT_DIR$/${SHARED_NAME}" />
+            #if (${HAS_DESKTOP})
+            <option value="$PROJECT_DIR$/desktop" />
+            #end
+            #if (${HAS_WEB})
+            <option value="$PROJECT_DIR$/jsApp" />
+            #end
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

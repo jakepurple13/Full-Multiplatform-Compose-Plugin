@@ -1,8 +1,10 @@
 package com.programmersbox.fullmultiplatformcompose
 
+import com.android.tools.idea.welcome.install.AndroidSdk
 import com.intellij.ide.projectWizard.ProjectSettingsStep
 import com.intellij.ide.util.projectWizard.ModuleBuilder
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
+import com.intellij.ide.util.projectWizard.SettingsStep
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
@@ -16,14 +18,19 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.programmersbox.fullmultiplatformcompose.generators.CommonGenerator
-import com.programmersbox.fullmultiplatformcompose.steps.FirstStep
-import com.programmersbox.fullmultiplatformcompose.steps.SecondStep
+import com.programmersbox.fullmultiplatformcompose.steps.PlatformOptionsStep
 import com.programmersbox.fullmultiplatformcompose.utils.backgroundTask
 import com.programmersbox.fullmultiplatformcompose.utils.runGradle
+import org.jetbrains.kotlin.tools.projectWizard.plugins.Plugins
+import org.jetbrains.kotlin.tools.projectWizard.wizard.IdeWizard
+import org.jetbrains.kotlin.tools.projectWizard.wizard.service.IdeaServices
 import java.io.File
+import javax.swing.JCheckBox
 
 
 class BuilderWizardBuilder : ModuleBuilder() {
+    private val wizard = IdeWizard(Plugins.allPlugins, IdeaServices.PROJECT_INDEPENDENT, isUnitTestMode = false)
+
     override fun getModuleType(): ModuleType<*> = BuilderModuleType()
 
     val params = BuilderParams()
@@ -50,6 +57,9 @@ class BuilderWizardBuilder : ModuleBuilder() {
                 ex.printStackTrace()
             }
             installGradleWrapper(modifiableRootModel.project)
+            if (params.hasAndroid) {
+                AndroidSdk(true)
+            }
         }
     }
 
@@ -71,19 +81,36 @@ class BuilderWizardBuilder : ModuleBuilder() {
         modulesProvider: ModulesProvider
     ): Array<ModuleWizardStep> {
         return arrayOf(
-            FirstStep(this),
-            SecondStep(this)
+            PlatformOptionsStep(this)
+        )
+    }
+
+    override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? {
+        settingsStep.addCheckboxItem("Include Android", params.hasAndroid) { params.hasAndroid = it }
+        settingsStep.addCheckboxItem("Include iOS", params.hasiOS) { params.hasiOS = it }
+        settingsStep.addCheckboxItem("Include Desktop", params.hasDesktop) { params.hasDesktop = it }
+        settingsStep.addCheckboxItem("Include Web", params.hasWeb) { params.hasWeb = it }
+
+        return super.modifySettingsStep(settingsStep)
+    }
+
+    private fun SettingsStep.addCheckboxItem(
+        label: String,
+        isChecked: Boolean,
+        selectedChangeListener: (Boolean) -> Unit
+    ) {
+        addSettingsField(
+            "",
+            JCheckBox().apply {
+                text = label
+                isSelected = isChecked
+                addItemListener { selectedChangeListener(!isChecked) }
+            }
         )
     }
 
     override fun getIgnoredSteps(): MutableList<Class<out ModuleWizardStep>> {
         return mutableListOf(ProjectSettingsStep::class.java)
     }
-
-    /*override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? {
-        settingsStep.addSettingsField("HI", JTextField())
-
-        return super.modifySettingsStep(settingsStep)
-    }*/
 
 }

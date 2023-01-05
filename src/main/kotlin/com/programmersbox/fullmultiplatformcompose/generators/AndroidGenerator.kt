@@ -45,5 +45,4 @@ class AndroidGenerator(params: BuilderParams) : PlatformGenerator(params) {
             )
         }
     }
-
 }

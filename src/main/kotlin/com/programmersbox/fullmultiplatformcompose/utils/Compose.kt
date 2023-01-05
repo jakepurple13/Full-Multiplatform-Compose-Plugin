@@ -16,30 +16,26 @@ import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
 import javax.swing.JComponent
-import javax.swing.JPanel
 import javax.swing.UIManager
 import java.awt.Color as AWTColor
 
 fun CreateComposePanel(
-    isVisible: Boolean = true,
     modification: ComposePanel.() -> Unit = {},
     content: @Composable () -> Unit
-): JComponent = if (isVisible) {
-    ComposePanel()
-        .apply(modification)
-        .apply {
-            setContent {
-                Theme {
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp),
-                        content = content
-                    )
-                }
+): JComponent = ComposePanel()
+    .apply(modification)
+    .apply {
+        setContent {
+            Theme {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                    content = content
+                )
             }
         }
-} else JPanel()
+    }
 
 enum class FileDialogMode(internal val id: Int) { Load(FileDialog.LOAD), Save(FileDialog.SAVE) }
 

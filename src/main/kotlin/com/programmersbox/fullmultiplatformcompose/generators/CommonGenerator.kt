@@ -136,7 +136,6 @@ class CommonGenerator(
                                 )
                             }
                         }
-
                     }
 
                     file(
@@ -164,6 +163,23 @@ class CommonGenerator(
 
                 if (params.hasWeb) {
                     webGenerator.generate(this, packageSegments)
+                }
+
+                dir(".idea") {
+                    arrayOf("gradle.xml").forEach { fileName ->
+                        file(
+                            fileName,
+                            "idea_${fileName}",
+                            mapOf(
+                                SHARED_NAME to params.sharedName,
+                                PACKAGE_NAME to params.packageName,
+                                "HAS_ANDROID" to params.hasAndroid,
+                                "HAS_DESKTOP" to params.hasDesktop,
+                                "HAS_IOS" to params.hasiOS,
+                                "HAS_WEB" to params.hasWeb,
+                            )
+                        )
+                    }
                 }
 
             }

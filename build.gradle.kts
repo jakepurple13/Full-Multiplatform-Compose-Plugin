@@ -21,7 +21,14 @@ intellij {
     version.set("2022.1.4")
     type.set("IC") // Target IDE Platform
 
-    plugins.set(listOf("gradle", "java", "org.jetbrains.kotlin"))
+    plugins.set(
+        listOf(
+            "gradle",
+            "java",
+            "org.jetbrains.kotlin",
+            "org.jetbrains.android"
+        )
+    )
 }
 
 dependencies {
