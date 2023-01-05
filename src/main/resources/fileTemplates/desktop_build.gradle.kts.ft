@@ -33,7 +33,7 @@ compose.desktop {
         mainClass = "MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "${APP_NAME}"
+            packageName = "${SHARED_NAME}"
             packageVersion = "1.0.0"
         }
     }

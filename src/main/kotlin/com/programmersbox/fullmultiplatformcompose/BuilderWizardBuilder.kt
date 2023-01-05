@@ -77,7 +77,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
     }
 
     private fun installGradleWrapper(project: Project) {
-        project.runGradle("wrapper --gradle-version 7.6 --distribution-type all")
+        project.runGradle("wrapper --gradle-version 7.5.1 --distribution-type all")
     }
 
     override fun getCustomOptionsStep(context: WizardContext?, parentDisposable: Disposable?): ModuleWizardStep {

@@ -63,14 +63,29 @@ class CommonGenerator(
                 dir(params.sharedName) {
                     dir("src") {
                         dir("commonMain") {
-                            packageFilesToPlatformKt(
-                                packageSegments,
-                                "common_platform.kt",
-                                mapOf(
-                                    SHARED_NAME to params.sharedName,
-                                    PACKAGE_NAME to params.packageName,
-                                )
-                            )
+                            dir("kotlin") {
+                                packages(packageSegments) {
+                                    dir(params.sharedName) {
+                                        file(
+                                            "platform.kt",
+                                            "common_platform.kt",
+                                            mapOf(
+                                                SHARED_NAME to params.sharedName,
+                                                PACKAGE_NAME to params.packageName,
+                                            )
+                                        )
+
+                                        file(
+                                            "App.kt",
+                                            "common_app.kt",
+                                            mapOf(
+                                                SHARED_NAME to params.sharedName,
+                                                PACKAGE_NAME to params.packageName,
+                                            )
+                                        )
+                                    }
+                                }
+                            }
                         }
 
                         if (params.hasAndroid) {
