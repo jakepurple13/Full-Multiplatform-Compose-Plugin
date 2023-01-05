@@ -62,7 +62,7 @@ class CommonGenerator(
 
                 dir(params.sharedName) {
                     dir("src") {
-                        dir(params.sharedName + "Main") {
+                        dir("commonMain") {
                             packageFilesToPlatformKt(
                                 packageSegments,
                                 "common_platform.kt",
