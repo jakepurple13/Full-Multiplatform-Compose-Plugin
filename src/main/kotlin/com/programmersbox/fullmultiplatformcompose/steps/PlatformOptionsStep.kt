@@ -95,11 +95,11 @@ class PlatformOptionsStep(
 
     override fun onStepLeaving() {
         hideMe = false
-        println("LEAVING Second!!!")
+        println("LEAVING Options!!!")
     }
 
     override fun _init() {
-        println("INIT Second!!!")
+        println("SHOWING Options!!!")
         hideMe = true
     }
 

@@ -21,7 +21,10 @@ import com.programmersbox.fullmultiplatformcompose.generators.CommonGenerator
 import com.programmersbox.fullmultiplatformcompose.steps.PlatformOptionsStep
 import com.programmersbox.fullmultiplatformcompose.utils.backgroundTask
 import com.programmersbox.fullmultiplatformcompose.utils.runGradle
+import org.jetbrains.kotlin.idea.projectWizard.WizardStatsService
 import org.jetbrains.kotlin.tools.projectWizard.plugins.Plugins
+import org.jetbrains.kotlin.tools.projectWizard.plugins.buildSystem.BuildSystemType
+import org.jetbrains.kotlin.tools.projectWizard.projectTemplates.ComposeMultiplatformApplicationProjectTemplate
 import org.jetbrains.kotlin.tools.projectWizard.wizard.IdeWizard
 import org.jetbrains.kotlin.tools.projectWizard.wizard.service.IdeaServices
 import java.io.File
@@ -29,15 +32,21 @@ import javax.swing.JCheckBox
 
 
 class BuilderWizardBuilder : ModuleBuilder() {
-    private val wizard = IdeWizard(Plugins.allPlugins, IdeaServices.PROJECT_INDEPENDENT, isUnitTestMode = false)
+    private val wizard = IdeWizard(Plugins.allPlugins, IdeaServices.PROJECT_INDEPENDENT, isUnitTestMode = false).apply {
+        buildSystemType = BuildSystemType.GradleKotlinDsl
+        projectTemplate = ComposeMultiplatformApplicationProjectTemplate
+    }
 
-    override fun getModuleType(): ModuleType<*> = BuilderModuleType()
+    private val uiEditorUsagesStats = WizardStatsService.UiEditorUsageStats()
 
     val params = BuilderParams()
+
+    override fun getModuleType(): ModuleType<*> = BuilderModuleType()
 
     override fun setupRootModel(modifiableRootModel: ModifiableRootModel) {
         val root = createAndGetRoot() ?: return
         modifiableRootModel.addContentEntry(root)
+        modifiableRootModel.sdk = moduleJdk
         try {
             ApplicationManager.getApplication().runWriteAction {
                 val manager = PsiManager.getInstance(modifiableRootModel.project)
@@ -51,8 +60,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
         }
         modifiableRootModel.project.backgroundTask("Setting up project") {
             try {
-                val generator = CommonGenerator(params, modifiableRootModel.project.name)
-                generator.generate(root)
+                CommonGenerator(params, modifiableRootModel.project.name).generate(root)
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
@@ -81,7 +89,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
         modulesProvider: ModulesProvider
     ): Array<ModuleWizardStep> {
         return arrayOf(
-            PlatformOptionsStep(this)
+            PlatformOptionsStep(this),
         )
     }
 

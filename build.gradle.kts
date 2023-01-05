@@ -26,7 +26,8 @@ intellij {
             "gradle",
             "java",
             "org.jetbrains.kotlin",
-            "org.jetbrains.android"
+            "org.jetbrains.android",
+            "org.jetbrains.compose.intellij.platform:0.1.0"
         )
     )
 }

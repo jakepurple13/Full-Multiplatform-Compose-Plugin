@@ -21,10 +21,14 @@
     <depends>org.jetbrains.kotlin</depends>
     <depends>com.intellij.gradle</depends>
     <depends>org.jetbrains.android</depends>
+    <depends>org.jetbrains.compose.intellij.platform</depends>
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <moduleType id="FULL_MULTIPLATFORM_COMPOSE_WIZARD" implementationClass="com.programmersbox.fullmultiplatformcompose.BuilderModuleType" />
-        <moduleBuilder builderClass="com.programmersbox.fullmultiplatformcompose.BuilderWizardBuilder" />
+        <moduleType id="FULL_MULTIPLATFORM_COMPOSE_WIZARD"
+                    implementationClass="com.programmersbox.fullmultiplatformcompose.BuilderModuleType"/>
+        <moduleBuilder
+                builderClass="com.programmersbox.fullmultiplatformcompose.BuilderWizardBuilder"
+                order="last"/>
     </extensions>
 </idea-plugin>
