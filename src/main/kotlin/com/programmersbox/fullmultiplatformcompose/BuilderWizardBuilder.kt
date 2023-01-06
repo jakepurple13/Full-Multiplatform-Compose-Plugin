@@ -27,6 +27,8 @@ import org.jetbrains.kotlin.tools.projectWizard.plugins.buildSystem.BuildSystemT
 import org.jetbrains.kotlin.tools.projectWizard.projectTemplates.ComposeMultiplatformApplicationProjectTemplate
 import org.jetbrains.kotlin.tools.projectWizard.wizard.IdeWizard
 import org.jetbrains.kotlin.tools.projectWizard.wizard.service.IdeaServices
+import org.jetbrains.skiko.OS
+import org.jetbrains.skiko.hostOs
 import java.io.File
 import javax.swing.JCheckBox
 
@@ -95,7 +97,9 @@ class BuilderWizardBuilder : ModuleBuilder() {
 
     override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? {
         settingsStep.addCheckboxItem("Include Android", params.hasAndroid) { params.hasAndroid = it }
-        settingsStep.addCheckboxItem("Include iOS", params.hasiOS) { params.hasiOS = it }
+        if (hostOs == OS.MacOS) {
+            settingsStep.addCheckboxItem("Include iOS", params.hasiOS) { params.hasiOS = it }
+        }
         settingsStep.addCheckboxItem("Include Desktop", params.hasDesktop) { params.hasDesktop = it }
         settingsStep.addCheckboxItem("Include Web", params.hasWeb) { params.hasWeb = it }
 
