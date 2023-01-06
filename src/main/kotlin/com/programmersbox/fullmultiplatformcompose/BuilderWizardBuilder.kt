@@ -21,12 +21,6 @@ import com.programmersbox.fullmultiplatformcompose.generators.CommonGenerator
 import com.programmersbox.fullmultiplatformcompose.steps.PlatformOptionsStep
 import com.programmersbox.fullmultiplatformcompose.utils.backgroundTask
 import com.programmersbox.fullmultiplatformcompose.utils.runGradle
-import org.jetbrains.kotlin.idea.projectWizard.WizardStatsService
-import org.jetbrains.kotlin.tools.projectWizard.plugins.Plugins
-import org.jetbrains.kotlin.tools.projectWizard.plugins.buildSystem.BuildSystemType
-import org.jetbrains.kotlin.tools.projectWizard.projectTemplates.ComposeMultiplatformApplicationProjectTemplate
-import org.jetbrains.kotlin.tools.projectWizard.wizard.IdeWizard
-import org.jetbrains.kotlin.tools.projectWizard.wizard.service.IdeaServices
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import java.io.File
@@ -34,13 +28,6 @@ import javax.swing.JCheckBox
 
 
 class BuilderWizardBuilder : ModuleBuilder() {
-    private val wizard = IdeWizard(Plugins.allPlugins, IdeaServices.PROJECT_INDEPENDENT, isUnitTestMode = false).apply {
-        buildSystemType = BuildSystemType.GradleKotlinDsl
-        projectTemplate = ComposeMultiplatformApplicationProjectTemplate
-    }
-
-    private val uiEditorUsagesStats = WizardStatsService.UiEditorUsageStats()
-
     val params = BuilderParams()
 
     override fun getModuleType(): ModuleType<*> = BuilderModuleType()
@@ -71,7 +58,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
                 AndroidSdk(true)
             }
             if (params.hasiOS) {
-                modifiableRootModel.project.runGradle("podInstall")
+                //modifiableRootModel.project.runGradle("podInstall")
             }
         }
     }

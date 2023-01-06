@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-public fun App() {
+internal fun App() {
     MaterialTheme(
         colors = if(isSystemInDarkTheme()) darkColors() else lightColors()
     ) {
