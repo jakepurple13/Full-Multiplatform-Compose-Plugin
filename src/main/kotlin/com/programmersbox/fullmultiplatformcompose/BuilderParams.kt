@@ -14,9 +14,14 @@ class BuilderParams {
     var sharedName by mutableStateOf("common")
 
     val android = Android()
+    val ios = IOS()
 }
 
 class Android {
     var minimumSdk: Int by mutableStateOf(24)
+    var appName: String by mutableStateOf("My Application")
+}
+
+class IOS {
     var appName: String by mutableStateOf("My Application")
 }

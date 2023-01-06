@@ -142,11 +142,11 @@ class CommonGenerator(
                             dir("iosMain") {
                                 packageFilesToPlatformKt(
                                     packageSegments,
-                                    "default_platform.kt",
+                                    "ios_platform.kt",
                                     mapOf(
                                         SHARED_NAME to params.sharedName,
                                         PACKAGE_NAME to params.packageName,
-                                        "PLATFORM_TYPE" to "iOS"
+                                        "APP_NAME" to params.ios.appName
                                     )
                                 )
                             }

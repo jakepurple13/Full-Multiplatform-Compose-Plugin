@@ -30,6 +30,8 @@ class PlatformOptionsStep(
     private var androidName by mutableStateOf(params.android.appName)
     private var androidMinimumSdk by mutableStateOf(params.android.minimumSdk)
 
+    private var iosName by mutableStateOf(params.ios.appName)
+
     private var hideMe by mutableStateOf(true)
 
     private val view by lazy {
@@ -77,7 +79,12 @@ class PlatformOptionsStep(
                     }
 
                     CreationItem("iOS", params.hasiOS) {
-
+                        OutlinedTextField(
+                            value = iosName,
+                            onValueChange = { iosName = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("App Name") }
+                        )
                     }
 
                     CreationItem("Web", params.hasWeb) {
@@ -140,6 +147,9 @@ class PlatformOptionsStep(
     override fun updateDataModel() {
         params.sharedName = sharedName
         params.packageName = packageName
+        params.android.appName = androidName
+        params.android.minimumSdk = androidMinimumSdk
+        params.ios.appName = iosName
     }
 
 }
