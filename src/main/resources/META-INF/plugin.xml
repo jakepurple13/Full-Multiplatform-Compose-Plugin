@@ -8,12 +8,17 @@
     <name>Full-Multiplatform-Compose</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="jakerein@gmail.com" url="https://www.yourcompany.com">Programmers Box</vendor>
+    <vendor email="jakerein@gmail.com" url="https://github.com/jakepurple13/Full-Multiplatform-Compose-Plugin">
+        Programmers Box
+    </vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
-    <description>Creation asdjkfjha ldskjfhja ;klsdjf;la kdjfa</description>
+    <description>
+        A project wizard to create a compose multiplatform application in your choice of android, ios, web,
+        and/or desktop!
+    </description>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->

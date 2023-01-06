@@ -26,7 +26,6 @@ import org.jetbrains.skiko.hostOs
 import java.io.File
 import javax.swing.JCheckBox
 
-
 class BuilderWizardBuilder : ModuleBuilder() {
     val params = BuilderParams()
 
@@ -47,6 +46,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
         }
+
         modifiableRootModel.project.backgroundTask("Setting up project") {
             try {
                 CommonGenerator(params, modifiableRootModel.project.name).generate(root)
@@ -54,11 +54,18 @@ class BuilderWizardBuilder : ModuleBuilder() {
                 ex.printStackTrace()
             }
             installGradleWrapper(modifiableRootModel.project)
+            RunConfigurationUtil.createConfigurations(modifiableRootModel.project, params)
             if (params.hasAndroid) {
                 AndroidSdk(true)
             }
             if (params.hasiOS) {
-                //modifiableRootModel.project.runGradle("podInstall")
+
+            }
+            if (params.hasDesktop) {
+
+            }
+            if (params.hasWeb) {
+
             }
         }
     }
