@@ -15,6 +15,7 @@ class CommonGenerator(
     private val androidGenerator = AndroidGenerator(params)
     private val webGenerator = WebGenerator(params)
     private val desktopGenerator = DesktopGenerator(params)
+    private val iosGenerator = IOSGenerator(params)
 
     fun generate(
         root: VirtualFile,
@@ -26,6 +27,14 @@ class CommonGenerator(
                 .toMutableList()
                 .apply { add(artifactId) }
                 .toList()*/
+
+            val generatorList = listOfNotNull(
+                if (params.hasAndroid) androidGenerator else null,
+                if (params.hasDesktop) desktopGenerator else null,
+                if (params.hasWeb) webGenerator else null,
+                if (params.hasiOS) iosGenerator else null
+            )
+
             root.build {
                 file(
                     "build.gradle.kts",
@@ -168,17 +177,7 @@ class CommonGenerator(
                     )
                 }
 
-                if (params.hasAndroid) {
-                    androidGenerator.generate(this, packageSegments)
-                }
-
-                if (params.hasDesktop) {
-                    desktopGenerator.generate(this, packageSegments)
-                }
-
-                if (params.hasWeb) {
-                    webGenerator.generate(this, packageSegments)
-                }
+                generatorList.forEach { it.generate(this, packageSegments) }
 
                 dir(".idea") {
                     arrayOf("gradle.xml").forEach { fileName ->

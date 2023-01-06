@@ -35,6 +35,14 @@ fun File.file(name: String, content: String) {
     file.writeText(content)
 }
 
+fun File.file(name: String, content: () -> String) {
+    val file = File(this, name)
+    if (!file.exists()) {
+        file.createNewFile()
+    }
+    file.writeText(content())
+}
+
 fun File.file(name: String, templateName: String, attributes: Map<String, Any> = emptyMap()) {
     val file = File(this, name)
     if (!file.exists()) {

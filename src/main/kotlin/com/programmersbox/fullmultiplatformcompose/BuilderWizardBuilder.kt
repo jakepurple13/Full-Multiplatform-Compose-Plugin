@@ -70,6 +70,9 @@ class BuilderWizardBuilder : ModuleBuilder() {
             if (params.hasAndroid) {
                 AndroidSdk(true)
             }
+            if (params.hasiOS) {
+                modifiableRootModel.project.runGradle("podInstall")
+            }
         }
     }
 

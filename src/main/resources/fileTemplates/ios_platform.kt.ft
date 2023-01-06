@@ -14,7 +14,7 @@ public actual fun getPlatformName(): String {
 }
 
 @Composable
-public fun UIShow() {
+private fun UIShow() {
     App()
 }
 
