@@ -41,6 +41,8 @@ class JsBuilderConfigurationFactory : ConfigurationFactory(GradleExternalTaskCon
     }
 
     override fun getName(): String = "Run Web"
+
+    override fun getId(): String = JsRunConfigurationType.ID
 }
 
 class JsBuilderRunConfiguration(project: Project, factory: ConfigurationFactory?, name: String?) :

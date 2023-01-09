@@ -22,6 +22,7 @@ import com.programmersbox.fullmultiplatformcompose.generators.CommonGenerator
 import com.programmersbox.fullmultiplatformcompose.steps.PlatformOptionsStep
 import com.programmersbox.fullmultiplatformcompose.utils.backgroundTask
 import com.programmersbox.fullmultiplatformcompose.utils.runGradle
+import org.jetbrains.plugins.gradle.service.project.open.linkAndRefreshGradleProject
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import java.awt.event.ItemEvent
@@ -55,12 +56,11 @@ class BuilderWizardBuilder : ModuleBuilder() {
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
-            installGradleWrapper(modifiableRootModel.project)
-            RunConfigurationUtil.createConfigurations(modifiableRootModel.project, params)
             if (params.hasAndroid) {
                 AndroidSdk(true)
                 setUpModules(modifiableRootModel.project)
             }
+
             if (params.hasiOS) {
 
             }
@@ -69,6 +69,15 @@ class BuilderWizardBuilder : ModuleBuilder() {
             }
             if (params.hasWeb) {
 
+            }
+
+            ApplicationManager.getApplication().invokeLater {
+                linkAndRefreshGradleProject(
+                    "${modifiableRootModel.project.presentableUrl}/build.gradle.kts",
+                    modifiableRootModel.project
+                )
+
+                RunConfigurationUtil.createConfigurations(modifiableRootModel.project, params)
             }
         }
     }

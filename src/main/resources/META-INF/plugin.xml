@@ -35,9 +35,9 @@
                 builderClass="com.programmersbox.fullmultiplatformcompose.BuilderWizardBuilder"
                 order="last"/>
 
-        <runConfigurationProducer
+        <!--<runConfigurationProducer
                 implementation="com.programmersbox.fullmultiplatformcompose.configurations.JsConfigSetup"/>
         <runConfigurationProducer
-                implementation="com.programmersbox.fullmultiplatformcompose.configurations.DesktopConfigSetup"/>
+                implementation="com.programmersbox.fullmultiplatformcompose.configurations.DesktopConfigSetup"/>-->
     </extensions>
 </idea-plugin>
