@@ -1,5 +1,6 @@
 package com.programmersbox.fullmultiplatformcompose
 
+import com.android.tools.idea.gradle.project.sync.setup.post.setUpModules
 import com.android.tools.idea.welcome.install.AndroidSdk
 import com.intellij.ide.projectWizard.ProjectSettingsStep
 import com.intellij.ide.util.projectWizard.ModuleBuilder
@@ -23,6 +24,7 @@ import com.programmersbox.fullmultiplatformcompose.utils.backgroundTask
 import com.programmersbox.fullmultiplatformcompose.utils.runGradle
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
+import java.awt.event.ItemEvent
 import java.io.File
 import javax.swing.JCheckBox
 
@@ -57,6 +59,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
             RunConfigurationUtil.createConfigurations(modifiableRootModel.project, params)
             if (params.hasAndroid) {
                 AndroidSdk(true)
+                setUpModules(modifiableRootModel.project)
             }
             if (params.hasiOS) {
 
@@ -113,7 +116,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
             JCheckBox().apply {
                 text = label
                 isSelected = isChecked
-                addItemListener { selectedChangeListener(!isChecked) }
+                addItemListener { selectedChangeListener(it.stateChange == ItemEvent.SELECTED) }
             }
         )
     }

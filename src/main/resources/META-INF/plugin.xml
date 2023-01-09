@@ -34,5 +34,10 @@
         <moduleBuilder
                 builderClass="com.programmersbox.fullmultiplatformcompose.BuilderWizardBuilder"
                 order="last"/>
+
+        <runConfigurationProducer
+                implementation="com.programmersbox.fullmultiplatformcompose.configurations.JsConfigSetup"/>
+        <runConfigurationProducer
+                implementation="com.programmersbox.fullmultiplatformcompose.configurations.DesktopConfigSetup"/>
     </extensions>
 </idea-plugin>
