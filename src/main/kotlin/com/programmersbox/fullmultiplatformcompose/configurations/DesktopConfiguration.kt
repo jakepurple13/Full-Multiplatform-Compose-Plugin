@@ -16,7 +16,9 @@ import com.intellij.openapi.ui.LabeledComponent
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.util.Ref
 import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.idea.run.*
+import org.jetbrains.kotlin.idea.run.KotlinRunConfiguration
+import org.jetbrains.kotlin.idea.run.KotlinRunConfigurationType
+import org.jetbrains.kotlin.idea.run.asJvmModule
 import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.JPanel
@@ -155,12 +157,13 @@ class DesktopConfigSetup : LazyRunConfigurationProducer<KotlinRunConfiguration>(
         configuration: KotlinRunConfiguration,
         context: ConfigurationContext
     ): Boolean {
-        val entryPointContainer =
+        return true
+        /*val entryPointContainer =
             context.location?.psiElement?.let { EntryPointContainerFinder.find(it) } ?: return false
         val startClassFQName = KotlinRunConfigurationProducer.getStartClassFqName(entryPointContainer) ?: return false
 
         return configuration.runClass == startClassFQName &&
-                context.module?.asJvmModule() == configuration.configurationModule?.module
+            context.module?.asJvmModule() == configuration.configurationModule?.module*/
     }
 
 }

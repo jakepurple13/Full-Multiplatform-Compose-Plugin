@@ -29,6 +29,7 @@ import org.jetbrains.skiko.hostOs
 import java.awt.event.ItemEvent
 import java.io.File
 import javax.swing.JCheckBox
+import javax.swing.JSeparator
 
 class BuilderWizardBuilder : ModuleBuilder() {
     val params = BuilderParams()
@@ -114,7 +115,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
         }
         settingsStep.addCheckboxItem("Include Desktop", params.hasDesktop) { params.hasDesktop = it }
         settingsStep.addCheckboxItem("Include Web", params.hasWeb) { params.hasWeb = it }
-
+        settingsStep.addSettingsField("", JSeparator())
         settingsStep.addCheckboxItem("Use Material 3", params.compose.useMaterial3) { params.compose.useMaterial3 = it }
 
         return super.modifySettingsStep(settingsStep)
