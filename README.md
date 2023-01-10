@@ -27,3 +27,9 @@ Either run `Run Web` or run `./gradlew :jsApp:jsBrowserDevelopmentRun`
 ### For iOS:
 
 Open the `iosApp` in XCode via `iosApp.xcworkspace` and run as normal from there.
+
+# Installing
+
+Either download and manually install
+from [here](https://github.com/jakepurple13/Full-Multiplatform-Compose-Plugin/releases/latest)
+OR find it on the JetBrains Marketplace (coming soon!...hopefully)
