@@ -51,7 +51,11 @@ kotlin {
                 api(compose.ui)
                 api(compose.foundation)
                 api(compose.materialIconsExtended)
+                #if (${USE_MATERIAL3})
+                api(compose.material3)
+                #else
                 api(compose.material)
+                #end
             }
         }
 

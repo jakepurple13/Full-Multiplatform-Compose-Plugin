@@ -47,8 +47,6 @@ class PlatformOptionsStep(
                             label = { Text("Shared Name") }
                         )
 
-                        Spacer(Modifier.height(2.dp))
-
                         OutlinedTextField(
                             value = packageName,
                             onValueChange = { packageName = it },
@@ -64,8 +62,6 @@ class PlatformOptionsStep(
                             modifier = Modifier.fillMaxWidth(),
                             label = { Text("App Name") }
                         )
-
-                        Spacer(Modifier.height(2.dp))
 
                         OutlinedTextField(
                             value = androidMinimumSdk.toString(),
@@ -117,7 +113,10 @@ class PlatformOptionsStep(
     private fun CreationItem(item: String, isIncluded: Boolean, content: @Composable ColumnScope.() -> Unit) {
         var showOrHide by remember { mutableStateOf(false) }
         if (isIncluded) {
-            Column(modifier = Modifier.animateContentSize()) {
+            Column(
+                modifier = Modifier.animateContentSize(),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
                 Card(
                     modifier = Modifier.animateContentSize(),
                     onClick = { showOrHide = !showOrHide }

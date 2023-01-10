@@ -15,6 +15,8 @@ class BuilderParams {
 
     val android = Android()
     val ios = IOS()
+
+    val compose = Compose()
 }
 
 class Android {
@@ -24,4 +26,8 @@ class Android {
 
 class IOS {
     var appName: String by mutableStateOf("My Application")
+}
+
+class Compose {
+    var useMaterial3: Boolean by mutableStateOf(true)
 }

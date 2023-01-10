@@ -89,7 +89,7 @@ class CommonGenerator(
 
                                         file(
                                             "App.kt",
-                                            "common_app.kt",
+                                            if (params.compose.useMaterial3) "common_app3.kt" else "common_app.kt",
                                             mapOf(
                                                 SHARED_NAME to params.sharedName,
                                                 PACKAGE_NAME to params.packageName,
@@ -176,6 +176,7 @@ class CommonGenerator(
                             "HAS_DESKTOP" to params.hasDesktop,
                             "HAS_IOS" to params.hasiOS,
                             "HAS_WEB" to params.hasWeb,
+                            "USE_MATERIAL3" to params.compose.useMaterial3,
                         )
                     )
                 }

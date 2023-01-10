@@ -115,6 +115,8 @@ class BuilderWizardBuilder : ModuleBuilder() {
         settingsStep.addCheckboxItem("Include Desktop", params.hasDesktop) { params.hasDesktop = it }
         settingsStep.addCheckboxItem("Include Web", params.hasWeb) { params.hasWeb = it }
 
+        settingsStep.addCheckboxItem("Use Material 3", params.compose.useMaterial3) { params.compose.useMaterial3 = it }
+
         return super.modifySettingsStep(settingsStep)
     }
 
