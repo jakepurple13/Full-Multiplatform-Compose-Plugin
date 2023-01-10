@@ -22,10 +22,7 @@ class IOSGenerator(params: BuilderParams) : PlatformGenerator(params) {
                     //  ContentView.swift
                     //  iosApp
                     //
-                    //  Created by Jacob Rein on 1/6/23.
-                    //  Copyright © 2023 orgName. All rights reserved.
-                    //
-
+                    
                     import Foundation
                     """.trimIndent()
                 }
