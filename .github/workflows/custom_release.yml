@@ -39,9 +39,6 @@ jobs:
       pull-requests: write
     steps:
 
-      - name: Print Tag
-        run: echo ${{ github.event.release.tag_name }}
-
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v3
@@ -54,6 +51,12 @@ jobs:
         with:
           distribution: zulu
           java-version: 11
+
+      - name: Get tag name
+        id: get_tag_name
+        run: |
+          set -x
+          echo "VERSION_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
       # Publish the plugin to the Marketplace
       - if: github.event.inputs.uploadToJBM == 'true'
@@ -74,4 +77,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         #run: gh release upload v1.0.3 ./build/distributions/*
-        run: gh release upload ${{ github.base_ref }} ./build/distributions/*
+        run: gh release upload ${{ env.VERSION_TAG }} ./build/distributions/*
