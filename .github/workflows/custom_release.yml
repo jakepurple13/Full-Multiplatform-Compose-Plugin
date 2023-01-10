@@ -66,6 +66,9 @@ jobs:
         name: Build Plugin
         run: ./gradlew buildPlugin
 
+      - name: Print Tag
+        run: echo ${{ github.event.release.tag_name }}
+
       # Upload artifact as a release asset
       - name: Upload Release Asset
         env:
