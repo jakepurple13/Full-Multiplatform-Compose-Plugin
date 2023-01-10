@@ -71,29 +71,5 @@ jobs:
       - name: Upload Release Asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ github.event.release.tag_name }} /build/distributions/*
-
-#      - uses: actions/upload-artifact@v3
-#        with:
-#          name: Compose Plugin
-#          path: /build/distributions/*
-#
-#      - name: Create Release
-#        id: create_release
-#        uses: softprops/action-gh-release@v1
-#        if: startsWith(github.ref, 'refs/tags/')
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          fail_on_unmatched_files: true
-#          tag_name: ${{ env.VERSION_TAG }}
-#          name: Release ${{ env.VERSION_TAG }}
-#          files: |
-#            mangaworld-release.apk
-#            animeworld-release.apk
-#            novelworld-release.apk
-#            animeworldtv-release.apk
-#            mangaworld-no-firebase-release.apk
-#            animeworld-no-firebase-release.apk
-#            novelworld-no-firebase-release.apk
-#            animeworldtv-no-firebase-release.apk
+        run: gh release upload v1.0.3 /build/distributions/*
+        #run: gh release upload ${{ github.event.release.tag_name }} /build/distributions/*
