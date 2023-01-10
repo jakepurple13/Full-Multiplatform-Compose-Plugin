@@ -18,7 +18,7 @@ Desktop, web, and iOS are a bit special.
 
 ### For Desktop:
 
-Either run `MainKt` or find the `main.kt` file and press run!
+Either run `MainKt` or find the `main.kt` file and press run on the gutter!
 
 ### For Web:
 
