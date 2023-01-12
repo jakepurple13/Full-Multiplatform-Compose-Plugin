@@ -59,8 +59,7 @@ jobs:
           echo "VERSION_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
       # Publish the plugin to the Marketplace
-      - if: github.event.inputs.uploadToJBM == 'true'
-        name: Publish Plugin
+      - name: Publish Plugin
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
           CERTIFICATE_CHAIN: ${{ secrets.CERTIFICATE_CHAIN }}
