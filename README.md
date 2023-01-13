@@ -32,4 +32,4 @@ Open the `iosApp` in XCode via `iosApp.xcworkspace` and run as normal from there
 
 Either download and manually install
 from [here](https://github.com/jakepurple13/Full-Multiplatform-Compose-Plugin/releases/latest)
-OR find it on the JetBrains Marketplace (coming soon!...hopefully)
+OR find it on the [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/20800-full-multiplatform-compose/versions/stable/276699)
