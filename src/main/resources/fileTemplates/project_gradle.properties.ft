@@ -10,7 +10,7 @@ kotlin.native.cocoapods.generate.wrapper=true
 kotlin.native.cacheKind=none
 kotlin.native.useEmbeddableCompilerJar=true
 android.useAndroidX=true
+org.gradle.jvmargs=-Xmx2048M -Dfile.encoding=UTF-8 -Dkotlin.daemon.jvm.options\="-Xmx2048M"
 kotlin.version=1.7.20
 agp.version=7.3.0
 compose.version=1.2.2
-org.gradle.jvmargs=-Xmx2048M -Dfile.encoding=UTF-8 -Dkotlin.daemon.jvm.options\="-Xmx2048M"

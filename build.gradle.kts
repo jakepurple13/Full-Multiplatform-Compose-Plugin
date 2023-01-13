@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.intellij") version "1.11.0"
     id("org.jetbrains.compose") version "1.2.2"
     id("idea")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.20"
 }
 
 group = "com.programmersbox"
@@ -35,6 +36,11 @@ intellij {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation(compose.materialIconsExtended)
+    val ktorVersion = "2.2.2"
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 }
 
 compose {
