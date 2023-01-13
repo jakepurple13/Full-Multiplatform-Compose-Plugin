@@ -18,17 +18,22 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.impl.file.PsiDirectoryFactory
+import com.intellij.ui.components.Link
 import com.programmersbox.fullmultiplatformcompose.configurations.BuilderConfigurationFactory
 import com.programmersbox.fullmultiplatformcompose.generators.CommonGenerator
 import com.programmersbox.fullmultiplatformcompose.steps.PlatformOptionsStep
+import com.programmersbox.fullmultiplatformcompose.utils.NetworkVersions
 import com.programmersbox.fullmultiplatformcompose.utils.backgroundTask
 import com.programmersbox.fullmultiplatformcompose.utils.runGradle
 import org.jetbrains.plugins.gradle.service.project.open.linkAndRefreshGradleProject
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
+import java.awt.Desktop
 import java.awt.event.ItemEvent
 import java.io.File
+import java.net.URI
 import javax.swing.JCheckBox
+import javax.swing.JLabel
 import javax.swing.JSeparator
 
 class BuilderWizardBuilder : ModuleBuilder() {
@@ -79,7 +84,6 @@ class BuilderWizardBuilder : ModuleBuilder() {
 
                 BuilderConfigurationFactory.createConfigurations(
                     modifiableRootModel.project,
-                    modifiableRootModel,
                     params
                 )
             }
@@ -117,6 +121,16 @@ class BuilderWizardBuilder : ModuleBuilder() {
         settingsStep.addCheckboxItem("Include Web", params.hasWeb) { params.hasWeb = it }
         settingsStep.addSettingsField("", JSeparator())
         settingsStep.addCheckboxItem("Use Material 3", params.compose.useMaterial3) { params.compose.useMaterial3 = it }
+        settingsStep.addCheckboxItem(
+            "Get latest library versions from remote source?",
+            params.remoteVersions
+        ) { params.remoteVersions = it }
+        settingsStep.addSettingsField("", JLabel().apply { text = "The source is from this plugin's GitHub Repo." })
+
+        settingsStep.addExpertField(
+            "GitHub:",
+            Link(NetworkVersions.githubRepoUrl) { Desktop.getDesktop().browse(URI(NetworkVersions.githubRepoUrl)) }
+        )
 
         return super.modifySettingsStep(settingsStep)
     }

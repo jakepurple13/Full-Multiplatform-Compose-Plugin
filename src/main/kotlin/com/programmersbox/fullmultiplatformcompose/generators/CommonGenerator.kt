@@ -2,10 +2,8 @@ package com.programmersbox.fullmultiplatformcompose.generators
 
 import com.intellij.openapi.vfs.VirtualFile
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
-import com.programmersbox.fullmultiplatformcompose.utils.build
-import com.programmersbox.fullmultiplatformcompose.utils.dir
-import com.programmersbox.fullmultiplatformcompose.utils.file
-import com.programmersbox.fullmultiplatformcompose.utils.packages
+import com.programmersbox.fullmultiplatformcompose.utils.*
+import kotlinx.coroutines.runBlocking
 import java.io.File
 
 internal const val SHARED_NAME = "SHARED_NAME"
@@ -15,10 +13,18 @@ class CommonGenerator(
     private val params: BuilderParams,
     private val projectName: String
 ) {
+
+    private val network = NetworkVersions()
+
     private val androidGenerator = AndroidGenerator(params)
     private val webGenerator = WebGenerator(params)
     private val desktopGenerator = DesktopGenerator(params)
     private val iosGenerator = IOSGenerator(params)
+
+    private fun BuilderParams.hasAndroid() = "HAS_ANDROID" to hasAndroid
+    private fun BuilderParams.hasIOS() = "HAS_IOS" to hasiOS
+    private fun BuilderParams.hasWeb() = "HAS_WEB" to hasWeb
+    private fun BuilderParams.hasDesktop() = "HAS_DESKTOP" to hasDesktop
 
     fun generate(
         root: VirtualFile,
@@ -45,10 +51,10 @@ class CommonGenerator(
                     mapOf(
                         PACKAGE_NAME to params.packageName,
                         "APP_NAME" to params.android.appName,
-                        "HAS_ANDROID" to params.hasAndroid,
-                        "HAS_DESKTOP" to params.hasDesktop,
-                        "HAS_IOS" to params.hasiOS,
-                        "HAS_WEB" to params.hasWeb,
+                        params.hasAndroid(),
+                        params.hasDesktop(),
+                        params.hasIOS(),
+                        params.hasWeb(),
                     )
                 )
 
@@ -59,17 +65,23 @@ class CommonGenerator(
                         PACKAGE_NAME to params.packageName,
                         SHARED_NAME to params.sharedName,
                         "APP_NAME" to projectName,
-                        "HAS_ANDROID" to params.hasAndroid,
-                        "HAS_DESKTOP" to params.hasDesktop,
-                        "HAS_IOS" to params.hasiOS,
-                        "HAS_WEB" to params.hasWeb,
+                        params.hasAndroid(),
+                        params.hasDesktop(),
+                        params.hasIOS(),
+                        params.hasWeb(),
                     )
                 )
+
+                val versions = runBlocking { network.getVersions(params.remoteVersions) }
 
                 file(
                     "gradle.properties",
                     "project_gradle.properties",
-                    mapOf()
+                    mapOf(
+                        "COMPOSE" to versions.composeVersion,
+                        "KOTLIN" to versions.kotlinVersion,
+                        "AGP" to versions.agpVersion
+                    )
                 )
 
                 dir(params.sharedName) {
@@ -172,10 +184,10 @@ class CommonGenerator(
                             SHARED_NAME to params.sharedName,
                             PACKAGE_NAME to params.packageName,
                             "MINSDK" to params.android.minimumSdk,
-                            "HAS_ANDROID" to params.hasAndroid,
-                            "HAS_DESKTOP" to params.hasDesktop,
-                            "HAS_IOS" to params.hasiOS,
-                            "HAS_WEB" to params.hasWeb,
+                            params.hasAndroid(),
+                            params.hasDesktop(),
+                            params.hasIOS(),
+                            params.hasWeb(),
                             "USE_MATERIAL3" to params.compose.useMaterial3,
                         )
                     )
@@ -191,10 +203,10 @@ class CommonGenerator(
                             mapOf(
                                 SHARED_NAME to params.sharedName,
                                 PACKAGE_NAME to params.packageName,
-                                "HAS_ANDROID" to params.hasAndroid,
-                                "HAS_DESKTOP" to params.hasDesktop,
-                                "HAS_IOS" to params.hasiOS,
-                                "HAS_WEB" to params.hasWeb,
+                                params.hasAndroid(),
+                                params.hasDesktop(),
+                                params.hasIOS(),
+                                params.hasWeb(),
                             )
                         )
                     }

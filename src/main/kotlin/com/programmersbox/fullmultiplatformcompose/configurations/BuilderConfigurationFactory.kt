@@ -5,11 +5,10 @@ import com.android.tools.idea.run.AndroidRunConfigurationType
 import com.intellij.execution.impl.RunManagerImpl
 import com.intellij.execution.impl.RunnerAndConfigurationSettingsImpl
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.ModifiableRootModel
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
 
 object BuilderConfigurationFactory {
-    fun createConfigurations(project: Project, modifiableRootModel: ModifiableRootModel, params: BuilderParams) {
+    fun createConfigurations(project: Project, params: BuilderParams) {
         val runInstance = RunManagerImpl.getInstanceImpl(project)
 
         val android = if (params.hasAndroid) {

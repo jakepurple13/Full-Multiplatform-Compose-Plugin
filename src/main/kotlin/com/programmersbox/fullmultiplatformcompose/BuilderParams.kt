@@ -17,6 +17,8 @@ class BuilderParams {
     val ios = IOS()
 
     val compose = Compose()
+
+    var remoteVersions by mutableStateOf(true)
 }
 
 class Android {
