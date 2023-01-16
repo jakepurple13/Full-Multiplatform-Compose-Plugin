@@ -2,6 +2,13 @@
 
 An intellij plugin to create multiplatform compose projects, covering everything! JS, Android, IOS, and desktop!
 
+To use, just go to File -> New Project -> Multiplatform Compose; then select what platforms you want to support!
+Next, change some options like package name and app names! Then! Create! And the entire project will be
+generated for you!
+
+No more needing to spend hours trying to figure out how to get a full multiplatform project together!
+No need to copy files from one new project to another to get all the platforms together in one project!
+
 <p align="center">
   <img src="/screenshots/plugin_start.png" width="32%"/>
   <img src="/screenshots/plugin_options.png" width="32%"/>
