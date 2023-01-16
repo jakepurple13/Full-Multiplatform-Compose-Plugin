@@ -121,6 +121,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
         settingsStep.addCheckboxItem("Include Web", params.hasWeb) { params.hasWeb = it }
         settingsStep.addSettingsField("", JSeparator())
         settingsStep.addCheckboxItem("Use Material 3", params.compose.useMaterial3) { params.compose.useMaterial3 = it }
+
         settingsStep.addCheckboxItem(
             "Get latest library versions from remote source?",
             params.remoteVersions
