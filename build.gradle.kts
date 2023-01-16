@@ -35,6 +35,7 @@ intellij {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation(compose.desktop.common)
     implementation(compose.materialIconsExtended)
     val ktorVersion = "2.2.2"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
