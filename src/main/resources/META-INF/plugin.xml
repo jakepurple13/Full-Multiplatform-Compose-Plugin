@@ -36,7 +36,6 @@
     <depends>com.intellij.gradle</depends>
     <depends>org.jetbrains.android</depends>
     <depends>com.intellij.modules.java</depends>
-    <depends>org.jetbrains.compose.intellij.platform</depends>
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
