@@ -18,7 +18,6 @@ import com.intellij.openapi.util.Ref
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.idea.run.KotlinRunConfiguration
 import org.jetbrains.kotlin.idea.run.KotlinRunConfigurationType
-import org.jetbrains.kotlin.idea.run.asJvmModule
 import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.JPanel
@@ -135,7 +134,7 @@ class DesktopConfigSetup : LazyRunConfigurationProducer<KotlinRunConfiguration>(
         sourceElement: Ref<PsiElement>
     ): Boolean {
         val location = context.location ?: return false
-        val module = location.module?.asJvmModule() ?: return false
+        val module = location.module ?: return false
         context.runManager.addConfiguration(
             RunnerAndConfigurationSettingsImpl(
                 RunManagerImpl(context.project),

@@ -1,6 +1,5 @@
 package com.programmersbox.fullmultiplatformcompose
 
-import com.android.tools.idea.gradle.project.sync.setup.post.setUpModules
 import com.android.tools.idea.welcome.install.AndroidSdk
 import com.intellij.ide.projectWizard.ProjectSettingsStep
 import com.intellij.ide.util.projectWizard.ModuleBuilder
@@ -65,7 +64,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
             }
             if (params.hasAndroid) {
                 AndroidSdk(true)
-                setUpModules(modifiableRootModel.project)
+                //setUpModules(modifiableRootModel.project)
             }
             if (params.hasiOS) {
 

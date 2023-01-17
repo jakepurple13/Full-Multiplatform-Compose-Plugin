@@ -41,9 +41,9 @@
     <extensions defaultExtensionNs="com.intellij">
         <moduleType id="FULL_MULTIPLATFORM_COMPOSE_WIZARD"
                     implementationClass="com.programmersbox.fullmultiplatformcompose.BuilderModuleType"/>
-        <!--<moduleBuilder
+        <moduleBuilder
                 builderClass="com.programmersbox.fullmultiplatformcompose.BuilderWizardBuilder"
-                order="last"/>-->
+                order="last"/>
 
         <!--<runConfigurationProducer
                 implementation="com.programmersbox.fullmultiplatformcompose.configurations.JsConfigSetup"/>
