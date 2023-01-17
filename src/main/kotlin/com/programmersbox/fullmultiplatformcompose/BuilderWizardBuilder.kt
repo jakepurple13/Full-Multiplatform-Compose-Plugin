@@ -16,6 +16,7 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
+import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.ui.components.Link
 import com.programmersbox.fullmultiplatformcompose.configurations.BuilderConfigurationFactory
@@ -24,6 +25,7 @@ import com.programmersbox.fullmultiplatformcompose.steps.PlatformOptionsStep
 import com.programmersbox.fullmultiplatformcompose.utils.NetworkVersions
 import com.programmersbox.fullmultiplatformcompose.utils.backgroundTask
 import com.programmersbox.fullmultiplatformcompose.utils.runGradle
+import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.plugins.gradle.service.project.open.linkAndRefreshGradleProject
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
@@ -80,6 +82,15 @@ class BuilderWizardBuilder : ModuleBuilder() {
                     "${modifiableRootModel.project.presentableUrl}/build.gradle.kts",
                     modifiableRootModel.project
                 )
+
+                val csm = CodeStyleManager.getInstance(modifiableRootModel.project)
+                File(root.path)
+                    .walk()
+                    .filter { it.extension == "kt" || it.extension == "kts" }
+                    .forEach {
+                        it.toPsiFile(modifiableRootModel.project)
+                            ?.let(csm::scheduleReformatWhenSettingsComputed)
+                    }
 
                 BuilderConfigurationFactory.createConfigurations(
                     modifiableRootModel.project,
