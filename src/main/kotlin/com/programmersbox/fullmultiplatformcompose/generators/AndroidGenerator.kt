@@ -13,14 +13,17 @@ class AndroidGenerator(params: BuilderParams) : PlatformGenerator(params) {
                 dir("main") {
                     dir("java") {
                         packages(packageSegments) {
-                            file(
-                                "MainActivity.kt",
-                                "android_mainactivity.kt",
-                                mapOf(
-                                    SHARED_NAME to params.sharedName,
-                                    PACKAGE_NAME to params.packageName,
+                            dir("android") {
+                                file(
+                                    "MainActivity.kt",
+                                    "android_mainactivity.kt",
+                                    mapOf(
+                                        SHARED_NAME to params.sharedName,
+                                        PACKAGE_NAME to params.packageName,
+                                        "USE_MATERIAL3" to params.compose.useMaterial3,
+                                    )
                                 )
-                            )
+                            }
                         }
                         dir("res")
                     }

@@ -3,7 +3,11 @@ package ${PACKAGE_NAME}.android
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+#if (${USE_MATERIAL3})
+import androidx.compose.material3.MaterialTheme
+#else
 import androidx.compose.material.MaterialTheme
+#end
 import ${PACKAGE_NAME}.${SHARED_NAME}.UIShow
 
 class MainActivity : AppCompatActivity() {
