@@ -83,14 +83,7 @@ class BuilderWizardBuilder : ModuleBuilder() {
                     modifiableRootModel.project
                 )
 
-                val csm = CodeStyleManager.getInstance(modifiableRootModel.project)
-                File(root.path)
-                    .walk()
-                    .filter { it.extension == "kt" || it.extension == "kts" }
-                    .forEach {
-                        it.toPsiFile(modifiableRootModel.project)
-                            ?.let(csm::scheduleReformatWhenSettingsComputed)
-                    }
+                formatCode(modifiableRootModel.project, root)
 
                 BuilderConfigurationFactory.createConfigurations(
                     modifiableRootModel.project,
@@ -98,6 +91,14 @@ class BuilderWizardBuilder : ModuleBuilder() {
                 )
             }
         }
+    }
+
+    private fun formatCode(project: Project, root: VirtualFile) {
+        val csm = CodeStyleManager.getInstance(project)
+        File(root.path)
+            .walk()
+            .filter { it.extension == "kt" || it.extension == "kts" }
+            .forEach { it.toPsiFile(project)?.let(csm::scheduleReformatWhenSettingsComputed) }
     }
 
     private fun createAndGetRoot(): VirtualFile? {
