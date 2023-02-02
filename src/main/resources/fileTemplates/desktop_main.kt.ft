@@ -1,9 +1,25 @@
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.compose.foundation.isSystemInDarkTheme
+#if (${USE_MATERIAL3})
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+#else
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+#end
 import ${PACKAGE_NAME}.${SHARED_NAME}.UIShow
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {
-        UIShow()
+        #if (${USE_MATERIAL3})
+        MaterialTheme(colorScheme = if(isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
+        #else
+        MaterialTheme(colors = if(isSystemInDarkTheme()) darkColors() else lightColors()) {
+        #end
+            UIShow()
+        }
     }
 }

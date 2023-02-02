@@ -17,7 +17,8 @@ class WebGenerator(params: BuilderParams) : PlatformGenerator(params) {
                             mapOf(
                                 SHARED_NAME to params.sharedName,
                                 PACKAGE_NAME to params.packageName,
-                                "APP_NAME" to params.android.appName
+                                "APP_NAME" to params.android.appName,
+                                "USE_MATERIAL3" to params.compose.useMaterial3,
                             )
                         )
                     }
