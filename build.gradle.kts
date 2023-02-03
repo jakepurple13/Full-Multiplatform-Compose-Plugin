@@ -1,14 +1,14 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
-    id("org.jetbrains.intellij") version "1.11.0"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
+    id("org.jetbrains.intellij") version "1.12.0"
     id("org.jetbrains.compose") version "1.2.2"
     id("idea")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.20"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
 }
 
 group = "com.programmersbox"
-version = "1.0.13"
+version = "1.0.14"
 
 repositories {
     mavenCentral()
@@ -45,8 +45,7 @@ dependencies {
 }
 
 compose {
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:1.3.2.1")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=1.7.22")
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:1.4.0")
 }
 
 tasks {
