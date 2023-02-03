@@ -48,4 +48,26 @@ class AndroidGenerator(params: BuilderParams) : PlatformGenerator(params) {
             )
         }
     }
+
+    override fun File.addToCommon(packageSegments: List<String>) {
+        dir("androidMain") {
+            packageFilesToPlatformKt(
+                packageSegments,
+                "default_platform.kt",
+                mapOf(
+                    SHARED_NAME to params.sharedName,
+                    PACKAGE_NAME to params.packageName,
+                    "PLATFORM_TYPE" to "Android"
+                )
+            ) { dir("resources") }
+
+            file(
+                "AndroidManifest.xml",
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="${params.packageName}.${params.sharedName}"/>
+                """.trimIndent()
+            )
+        }
+    }
 }

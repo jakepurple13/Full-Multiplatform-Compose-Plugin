@@ -35,4 +35,18 @@ class DesktopGenerator(params: BuilderParams) : PlatformGenerator(params) {
             )
         }
     }
+
+    override fun File.addToCommon(packageSegments: List<String>) {
+        dir("desktopMain") {
+            packageFilesToPlatformKt(
+                packageSegments,
+                "default_platform.kt",
+                mapOf(
+                    SHARED_NAME to params.sharedName,
+                    PACKAGE_NAME to params.packageName,
+                    "PLATFORM_TYPE" to "Desktop"
+                )
+            )
+        }
+    }
 }

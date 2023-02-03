@@ -313,4 +313,18 @@ class IOSGenerator(params: BuilderParams) : PlatformGenerator(params) {
 
         }
     }
+
+    override fun File.addToCommon(packageSegments: List<String>) {
+        dir("iosMain") {
+            packageFilesToPlatformKt(
+                packageSegments,
+                if (params.compose.useMaterial3) "ios_platform3.kt" else "ios_platform.kt",
+                mapOf(
+                    SHARED_NAME to params.sharedName,
+                    PACKAGE_NAME to params.packageName,
+                    "APP_NAME" to params.ios.appName
+                )
+            )
+        }
+    }
 }

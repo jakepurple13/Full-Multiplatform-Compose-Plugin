@@ -4,7 +4,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
 import com.programmersbox.fullmultiplatformcompose.utils.*
 import kotlinx.coroutines.runBlocking
-import java.io.File
 
 internal const val SHARED_NAME = "SHARED_NAME"
 internal const val PACKAGE_NAME = "PACKAGE_NAME"
@@ -113,69 +112,7 @@ class CommonGenerator(
                             }
                         }
 
-                        if (params.hasAndroid) {
-                            dir("androidMain") {
-                                packageFilesToPlatformKt(
-                                    packageSegments,
-                                    "default_platform.kt",
-                                    mapOf(
-                                        SHARED_NAME to params.sharedName,
-                                        PACKAGE_NAME to params.packageName,
-                                        "PLATFORM_TYPE" to "Android"
-                                    )
-                                ) { dir("resources") }
-
-                                file(
-                                    "AndroidManifest.xml",
-                                    """
-                                    <?xml version="1.0" encoding="utf-8"?>
-                                    <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="${params.packageName}.${params.sharedName}"/>
-                                    """.trimIndent()
-                                )
-                            }
-                        }
-
-                        if (params.hasDesktop) {
-                            dir("desktopMain") {
-                                packageFilesToPlatformKt(
-                                    packageSegments,
-                                    "default_platform.kt",
-                                    mapOf(
-                                        SHARED_NAME to params.sharedName,
-                                        PACKAGE_NAME to params.packageName,
-                                        "PLATFORM_TYPE" to "Desktop"
-                                    )
-                                )
-                            }
-                        }
-
-                        if (params.hasWeb) {
-                            dir("jsMain") {
-                                packageFilesToPlatformKt(
-                                    packageSegments,
-                                    "default_platform.kt",
-                                    mapOf(
-                                        SHARED_NAME to params.sharedName,
-                                        PACKAGE_NAME to params.packageName,
-                                        "PLATFORM_TYPE" to "JavaScript"
-                                    )
-                                )
-                            }
-                        }
-
-                        if (params.hasiOS) {
-                            dir("iosMain") {
-                                packageFilesToPlatformKt(
-                                    packageSegments,
-                                    if (params.compose.useMaterial3) "ios_platform3.kt" else "ios_platform.kt",
-                                    mapOf(
-                                        SHARED_NAME to params.sharedName,
-                                        PACKAGE_NAME to params.packageName,
-                                        "APP_NAME" to params.ios.appName
-                                    )
-                                )
-                            }
-                        }
+                        generatorList.forEach { it.commonFiles(this, packageSegments) }
                     }
 
                     file(
@@ -312,25 +249,4 @@ class CommonGenerator(
             println(ex)
         }
     }
-
-    private fun File.packageFilesToPlatformKt(
-        packageSegments: List<String>,
-        templateName: String,
-        attributes: Map<String, Any>,
-        additions: File.() -> Unit = {}
-    ) {
-        dir("kotlin") {
-            packages(packageSegments) {
-                dir(params.sharedName) {
-                    file(
-                        "platform.kt",
-                        templateName,
-                        attributes
-                    )
-                }
-            }
-            additions()
-        }
-    }
-
 }

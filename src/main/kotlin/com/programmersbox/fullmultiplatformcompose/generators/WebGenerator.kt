@@ -30,16 +30,41 @@ class WebGenerator(params: BuilderParams) : PlatformGenerator(params) {
                                 <html lang="en">
                                 <head>
                                     <meta charset="UTF-8">
-                                    <title>compose multiplatform web demo</title>
+                                    <title>compose multiplatform web</title>
                                     <script src="skiko.js"> </script>
                                     <link type="text/css" rel="stylesheet" href="styles.css" />
                                 </head>
                                 <body>
-                                <h1>compose multiplatform web demo</h1>
                                 <div>
-                                    <canvas id="ComposeTarget" width="800" height="600"></canvas>
+                                    <canvas id="ComposeTarget"></canvas>
                                 </div>
                                 <script src="jsApp.js"> </script>
+                                <script>
+                                (function() {
+                                  var
+                                    // Obtain a reference to the canvas element using its id.
+                                    htmlCanvas = document.getElementById('ComposeTarget');
+
+                                  // Start listening to resize events and draw canvas.
+                                  initialize();
+
+                                  function initialize() {
+                                    // Register an event listener to call the resizeCanvas() function
+                                    // each time the window is resized.
+                                    window.addEventListener('resize', resizeCanvas, false);
+                                    // Draw canvas border for the first time.
+                                    resizeCanvas();
+                                  }
+
+                                  // Runs each time the DOM window resize event fires.
+                                  // Resets the canvas dimensions to match window,
+                                  // then draws the new borders accordingly.
+                                  function resizeCanvas() {
+                                    htmlCanvas.width = window.innerWidth;
+                                    htmlCanvas.height = window.innerHeight;
+                                  }
+                                })();
+                                </script>
                                 </body>
                                 </html>
                             """.trimIndent()
@@ -55,6 +80,12 @@ class WebGenerator(params: BuilderParams) : PlatformGenerator(params) {
                                 #root > .compose-web-column > div {
                                     position: relative;
                                 }
+                                
+                                canvas {
+                                    width: 90%;
+                                    height: 90%;
+                                    display: block;
+                                }
                             """.trimIndent()
                         )
                     }
@@ -66,6 +97,20 @@ class WebGenerator(params: BuilderParams) : PlatformGenerator(params) {
                 "js_build.gradle.kts",
                 mapOf(
                     SHARED_NAME to params.sharedName,
+                )
+            )
+        }
+    }
+
+    override fun File.addToCommon(packageSegments: List<String>) {
+        dir("jsMain") {
+            packageFilesToPlatformKt(
+                packageSegments,
+                "default_platform.kt",
+                mapOf(
+                    SHARED_NAME to params.sharedName,
+                    PACKAGE_NAME to params.packageName,
+                    "PLATFORM_TYPE" to "JavaScript"
                 )
             )
         }
