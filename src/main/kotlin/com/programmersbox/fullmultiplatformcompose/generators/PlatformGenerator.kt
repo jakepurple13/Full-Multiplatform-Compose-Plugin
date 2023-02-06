@@ -1,5 +1,6 @@
 package com.programmersbox.fullmultiplatformcompose.generators
 
+import com.intellij.openapi.vfs.VirtualFile
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
 import com.programmersbox.fullmultiplatformcompose.utils.dir
 import com.programmersbox.fullmultiplatformcompose.utils.file
@@ -7,6 +8,8 @@ import com.programmersbox.fullmultiplatformcompose.utils.packages
 import java.io.File
 
 abstract class PlatformGenerator(protected val params: BuilderParams) {
+
+    open fun setup(root: VirtualFile) {}
 
     fun generate(
         file: File,
@@ -41,5 +44,9 @@ abstract class PlatformGenerator(protected val params: BuilderParams) {
             additions()
         }
     }
+
+    fun addRunConfiguration(file: File, projectName: String) = file.addRunConfig(projectName)
+
+    protected open fun File.addRunConfig(projectName: String) {}
 
 }

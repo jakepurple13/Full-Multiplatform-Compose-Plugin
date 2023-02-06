@@ -1,6 +1,5 @@
 package com.programmersbox.fullmultiplatformcompose
 
-import com.android.tools.idea.welcome.install.AndroidSdk
 import com.intellij.ide.projectWizard.ProjectSettingsStep
 import com.intellij.ide.util.projectWizard.ModuleBuilder
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
@@ -63,19 +62,6 @@ class BuilderWizardBuilder : ModuleBuilder() {
                 CommonGenerator(params, modifiableRootModel.project.name).generate(root)
             } catch (ex: Exception) {
                 ex.printStackTrace()
-            }
-            if (params.hasAndroid) {
-                AndroidSdk(true)
-                //setUpModules(modifiableRootModel.project)
-            }
-            if (params.hasiOS) {
-
-            }
-            if (params.hasDesktop) {
-
-            }
-            if (params.hasWeb) {
-
             }
             ApplicationManager.getApplication().invokeLater {
                 linkAndRefreshGradleProject(

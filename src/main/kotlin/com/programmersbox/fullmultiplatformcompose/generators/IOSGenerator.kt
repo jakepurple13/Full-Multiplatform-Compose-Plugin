@@ -6,6 +6,11 @@ import com.programmersbox.fullmultiplatformcompose.utils.file
 import java.io.File
 
 class IOSGenerator(params: BuilderParams) : PlatformGenerator(params) {
+    /*override fun setup(root: VirtualFile) {
+        ApplicationManager.getApplication().invokeLater {
+            XcodeProjectConfigurator().createSkeleton(root)
+        }
+    }*/
     override fun File.generateProject(packageSegments: List<String>) {
         dir("iosApp") {
             dir("iosApp") {

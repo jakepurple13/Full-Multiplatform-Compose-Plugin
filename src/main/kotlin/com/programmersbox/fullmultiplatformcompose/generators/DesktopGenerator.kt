@@ -49,4 +49,21 @@ class DesktopGenerator(params: BuilderParams) : PlatformGenerator(params) {
             )
         }
     }
+
+    override fun File.addRunConfig(projectName: String) {
+        file("Run_Desktop.run.xml") {
+            """
+            <component name="ProjectRunConfigurationManager">
+              <configuration default="false" name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
+                <option name="MAIN_CLASS_NAME" value="MainKt" />
+                <module name="$projectName.desktop.jvmMain" />
+                <shortenClasspath name="NONE" />
+                <method v="2">
+                  <option name="Make" enabled="true" />
+                </method>
+              </configuration>
+            </component>
+            """.trimIndent()
+        }
+    }
 }
