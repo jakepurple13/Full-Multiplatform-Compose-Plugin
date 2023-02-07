@@ -34,17 +34,15 @@ class NetworkVersions {
             .let { json.decodeFromString<ProjectVersions>(it) }
     }.getOrElse {
         it.printStackTrace()
-        ProjectVersions(
-            kotlinVersion = "1.8.0",
-            agpVersion = "7.3.0",
-            composeVersion = "1.3.0"
-        )
+        ProjectVersions()
     }
 }
 
 @Serializable
 data class ProjectVersions(
-    val kotlinVersion: String,
-    val agpVersion: String,
-    val composeVersion: String
+    val kotlinVersion: String = "1.8.0",
+    val agpVersion: String = "7.3.0",
+    val composeVersion: String = "1.3.0",
+    val androidxAppCompat: String = "1.6.0",
+    val androidxCore: String = "1.9.0"
 )

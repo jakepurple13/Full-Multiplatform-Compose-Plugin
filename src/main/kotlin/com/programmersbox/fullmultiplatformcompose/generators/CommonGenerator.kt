@@ -15,11 +15,6 @@ class CommonGenerator(
 
     private val network = NetworkVersions()
 
-    private val androidGenerator = AndroidGenerator(params)
-    private val webGenerator = WebGenerator(params)
-    private val desktopGenerator = DesktopGenerator(params)
-    private val iosGenerator = IOSGenerator(params)
-
     private fun BuilderParams.hasAndroid() = "HAS_ANDROID" to hasAndroid
     private fun BuilderParams.hasIOS() = "HAS_IOS" to hasiOS
     private fun BuilderParams.hasWeb() = "HAS_WEB" to hasWeb
@@ -37,10 +32,10 @@ class CommonGenerator(
                 .toList()*/
 
             val generatorList = listOfNotNull(
-                if (params.hasAndroid) androidGenerator else null,
-                if (params.hasDesktop) desktopGenerator else null,
-                if (params.hasWeb) webGenerator else null,
-                if (params.hasiOS) iosGenerator else null
+                if (params.hasAndroid) AndroidGenerator(params) else null,
+                if (params.hasDesktop) DesktopGenerator(params) else null,
+                if (params.hasWeb) WebGenerator(params) else null,
+                if (params.hasiOS) IOSGenerator(params) else null
             )
 
             root.build {
@@ -79,7 +74,7 @@ class CommonGenerator(
                     mapOf(
                         "COMPOSE" to versions.composeVersion,
                         "KOTLIN" to versions.kotlinVersion,
-                        "AGP" to versions.agpVersion
+                        "AGP" to versions.agpVersion,
                     )
                 )
 
@@ -127,6 +122,8 @@ class CommonGenerator(
                             params.hasIOS(),
                             params.hasWeb(),
                             "USE_MATERIAL3" to params.compose.useMaterial3,
+                            "androidxAppCompat" to versions.androidxAppCompat,
+                            "androidxCore" to versions.androidxCore
                         )
                     )
                 }

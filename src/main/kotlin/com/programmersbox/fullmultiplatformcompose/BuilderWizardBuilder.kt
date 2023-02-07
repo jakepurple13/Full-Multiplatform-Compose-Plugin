@@ -116,8 +116,10 @@ class BuilderWizardBuilder : ModuleBuilder() {
         }
         settingsStep.addCheckboxItem("Include Desktop", params.hasDesktop) { params.hasDesktop = it }
         settingsStep.addCheckboxItem("Include Web", params.hasWeb) { params.hasWeb = it }
-        settingsStep.addSettingsField("", JSeparator())
+        settingsStep.addDivider()
         settingsStep.addCheckboxItem("Use Material 3", params.compose.useMaterial3) { params.compose.useMaterial3 = it }
+
+        settingsStep.addDivider()
 
         settingsStep.addCheckboxItem(
             "Get latest library versions from remote source?",
@@ -132,6 +134,8 @@ class BuilderWizardBuilder : ModuleBuilder() {
 
         return super.modifySettingsStep(settingsStep)
     }
+
+    private fun SettingsStep.addDivider() = addSettingsField("", JSeparator())
 
     private fun SettingsStep.addCheckboxItem(
         label: String,
