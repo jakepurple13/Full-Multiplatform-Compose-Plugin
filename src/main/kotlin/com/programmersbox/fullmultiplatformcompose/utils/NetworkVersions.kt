@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 class NetworkVersions {
 
     companion object {
-        val githubRepoUrl = "https://github.com/jakepurple13/Full-Multiplatform-Compose-Plugin"
+        const val githubRepoUrl = "https://github.com/jakepurple13/Full-Multiplatform-Compose-Plugin"
     }
 
     private val json = Json {
@@ -35,9 +35,9 @@ class NetworkVersions {
     }.getOrElse {
         it.printStackTrace()
         ProjectVersions(
-            kotlinVersion = "1.7.20",
+            kotlinVersion = "1.8.0",
             agpVersion = "7.3.0",
-            composeVersion = "1.2.2"
+            composeVersion = "1.3.0"
         )
     }
 }
