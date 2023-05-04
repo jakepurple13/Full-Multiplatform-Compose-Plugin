@@ -18,7 +18,6 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.ui.components.Link
-import com.programmersbox.fullmultiplatformcompose.configurations.BuilderConfigurationFactory
 import com.programmersbox.fullmultiplatformcompose.generators.CommonGenerator
 import com.programmersbox.fullmultiplatformcompose.steps.PlatformOptionsStep
 import com.programmersbox.fullmultiplatformcompose.utils.NetworkVersions
@@ -71,10 +70,10 @@ class BuilderWizardBuilder : ModuleBuilder() {
 
                 formatCode(modifiableRootModel.project, root)
 
-                BuilderConfigurationFactory.createConfigurations(
+                /*BuilderConfigurationFactory.createConfigurations(
                     modifiableRootModel.project,
                     params
-                )
+                )*/
             }
         }
     }
