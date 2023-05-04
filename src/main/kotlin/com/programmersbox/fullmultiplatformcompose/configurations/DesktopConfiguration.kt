@@ -1,11 +1,7 @@
 package com.programmersbox.fullmultiplatformcompose.configurations
 
 import com.intellij.execution.Executor
-import com.intellij.execution.actions.ConfigurationContext
-import com.intellij.execution.actions.LazyRunConfigurationProducer
 import com.intellij.execution.configurations.*
-import com.intellij.execution.impl.RunManagerImpl
-import com.intellij.execution.impl.RunnerAndConfigurationSettingsImpl
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.components.BaseState
@@ -14,10 +10,6 @@ import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.LabeledComponent
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
-import com.intellij.openapi.util.Ref
-import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.idea.run.KotlinRunConfiguration
-import org.jetbrains.kotlin.idea.run.KotlinRunConfigurationType
 import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.JPanel
@@ -120,49 +112,4 @@ class DesktopRunConfigurationType : ConfigurationType {
     companion object {
         const val ID = "DesktopRunConfiguration"
     }
-}
-
-class DesktopConfigSetup : LazyRunConfigurationProducer<KotlinRunConfiguration>() {
-
-    override fun getConfigurationFactory(): ConfigurationFactory {
-        return DesktopConfigurationFactory(KotlinRunConfigurationType())
-    }
-
-    override fun setupConfigurationFromContext(
-        configuration: KotlinRunConfiguration,
-        context: ConfigurationContext,
-        sourceElement: Ref<PsiElement>
-    ): Boolean {
-        val location = context.location ?: return false
-        val module = location.module ?: return false
-        context.runManager.addConfiguration(
-            RunnerAndConfigurationSettingsImpl(
-                RunManagerImpl(context.project),
-                KotlinRunConfiguration(
-                    "Desktop",
-                    JavaRunConfigurationModule(context.project, true),
-                    KotlinRunConfigurationType.instance
-                ).apply {
-                    runClass = "MainKt"
-                    setModule(module)
-                    setGeneratedName()
-                }
-            )
-        )
-        return true
-    }
-
-    override fun isConfigurationFromContext(
-        configuration: KotlinRunConfiguration,
-        context: ConfigurationContext
-    ): Boolean {
-        return true
-        /*val entryPointContainer =
-            context.location?.psiElement?.let { EntryPointContainerFinder.find(it) } ?: return false
-        val startClassFQName = KotlinRunConfigurationProducer.getStartClassFqName(entryPointContainer) ?: return false
-
-        return configuration.runClass == startClassFQName &&
-            context.module?.asJvmModule() == configuration.configurationModule?.module*/
-    }
-
 }

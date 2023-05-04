@@ -2,11 +2,7 @@ package com.programmersbox.fullmultiplatformcompose.configurations
 
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
-import com.intellij.execution.actions.ConfigurationContext
-import com.intellij.execution.actions.LazyRunConfigurationProducer
 import com.intellij.execution.configurations.*
-import com.intellij.execution.impl.RunManagerImpl
-import com.intellij.execution.impl.RunnerAndConfigurationSettingsImpl
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessHandlerFactory
 import com.intellij.execution.process.ProcessTerminatedListener
@@ -18,8 +14,6 @@ import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.LabeledComponent
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
-import com.intellij.openapi.util.Ref
-import com.intellij.psi.PsiElement
 import org.jetbrains.plugins.gradle.service.execution.GradleExternalTaskConfigurationType
 import org.jetbrains.plugins.gradle.service.execution.GradleRunConfiguration
 import javax.swing.Icon
@@ -147,33 +141,5 @@ class JsRunConfigurationType : ConfigurationType {
 
     companion object {
         const val ID = "JsRunConfiguration"
-    }
-}
-
-class JsConfigSetup : LazyRunConfigurationProducer<JsBuilderRunConfiguration>() {
-
-    override fun getConfigurationFactory(): ConfigurationFactory {
-        return JsConfigurationFactory(JsRunConfigurationType())
-    }
-
-    override fun setupConfigurationFromContext(
-        configuration: JsBuilderRunConfiguration,
-        context: ConfigurationContext,
-        sourceElement: Ref<PsiElement>
-    ): Boolean {
-        context.runManager.addConfiguration(
-            RunnerAndConfigurationSettingsImpl(
-                RunManagerImpl(context.project),
-                JsBuilderConfigurationFactory().createTemplateConfiguration(context.project)
-            )
-        )
-        return configuration.project.projectFile?.children?.any { it.name == "jsApp" } ?: false
-    }
-
-    override fun isConfigurationFromContext(
-        configuration: JsBuilderRunConfiguration,
-        context: ConfigurationContext
-    ): Boolean {
-        return configuration.project.projectFile?.children?.any { it.name == "jsApp" } ?: false
     }
 }

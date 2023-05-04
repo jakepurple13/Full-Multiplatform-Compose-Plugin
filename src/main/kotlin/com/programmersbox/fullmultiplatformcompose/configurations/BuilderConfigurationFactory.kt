@@ -1,9 +1,8 @@
 package com.programmersbox.fullmultiplatformcompose.configurations
+/*
 
 import com.android.tools.idea.run.AndroidRunConfiguration
 import com.android.tools.idea.run.AndroidRunConfigurationType
-import com.intellij.execution.impl.RunManagerImpl
-import com.intellij.execution.impl.RunnerAndConfigurationSettingsImpl
 import com.intellij.openapi.project.Project
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
 
@@ -21,7 +20,8 @@ object BuilderConfigurationFactory {
 
         android?.let(runInstance::addConfiguration)
 
-        /*val desktop = if (params.hasDesktop) {
+        */
+/*val desktop = if (params.hasDesktop) {
             println("Creating Desktop")
             RunnerAndConfigurationSettingsImpl(
                 runInstance,
@@ -56,7 +56,8 @@ object BuilderConfigurationFactory {
             )
         } else null
 
-        desktop?.let(runInstance::addConfiguration)*/
+        desktop?.let(runInstance::addConfiguration)*//*
+
 
         val web = if (params.hasWeb) {
             println("Creating Web")
@@ -77,4 +78,4 @@ object BuilderConfigurationFactory {
         runInstance.setOrder({ one, two -> one.name.compareTo(two.name) })
         runInstance.requestSort()
     }
-}
+}*/
