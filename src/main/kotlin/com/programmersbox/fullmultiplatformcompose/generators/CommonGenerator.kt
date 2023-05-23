@@ -75,6 +75,8 @@ class CommonGenerator(
                         "COMPOSE" to versions.composeVersion,
                         "KOTLIN" to versions.kotlinVersion,
                         "AGP" to versions.agpVersion,
+                        "KTOR" to versions.ktor,
+                        "KOIN" to versions.koin
                     )
                 )
 
@@ -123,7 +125,9 @@ class CommonGenerator(
                             params.hasWeb(),
                             "USE_MATERIAL3" to params.compose.useMaterial3,
                             "androidxAppCompat" to versions.androidxAppCompat,
-                            "androidxCore" to versions.androidxCore
+                            "androidxCore" to versions.androidxCore,
+                            "USE_KTOR" to params.library.useKtor,
+                            "USE_KOIN" to params.library.useKoin,
                         )
                     )
                 }
