@@ -9,6 +9,9 @@ plugins {
     #end
 }
 
+val ktorVersion = extra["ktor.version"]
+val koinVersion = extra["koin.version"]
+
 group = "${PACKAGE_NAME}"
 version = "1.0-SNAPSHOT"
 
@@ -56,6 +59,14 @@ kotlin {
                 #else
                 api(compose.material)
                 #end
+
+                #if (${USE_KTOR})
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                #end
+
+                #if (${USE_KOIN})
+                implementation("io.insert-koin:koin-core:$koinVersion")
+                #end
             }
         }
 
@@ -70,6 +81,9 @@ kotlin {
             dependencies {
                 api("androidx.appcompat:appcompat:${androidxAppCompat}")
                 api("androidx.core:core-ktx:${androidxCore}")
+                #if (${USE_KTOR})
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                #end
             }
         }
 
@@ -84,6 +98,9 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
+                #if (${USE_KTOR})
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                #end
             }
         }
 
@@ -94,6 +111,11 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(compose.web.core)
+
+                #if (${USE_KTOR})
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
+                implementation("io.ktor:ktor-client-json-js:$ktorVersion")
+                #end
             }
         }
         #end
@@ -104,7 +126,9 @@ kotlin {
         val iosSimulatorArm64Main by getting
         val iosMain by getting {
             dependencies {
-
+                #if (${USE_KTOR})
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+                #end
             }
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)

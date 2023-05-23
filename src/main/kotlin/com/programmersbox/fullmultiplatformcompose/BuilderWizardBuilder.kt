@@ -120,6 +120,11 @@ class BuilderWizardBuilder : ModuleBuilder() {
 
         settingsStep.addDivider()
 
+        settingsStep.addCheckboxItem("Use Koin for Dependency Injection", params.library.useKoin) { params.library.useKoin = it }
+        settingsStep.addCheckboxItem("Use Ktor for HTTP client apps", params.library.useKtor) { params.library.useKtor = it }
+
+        settingsStep.addDivider()
+
         settingsStep.addCheckboxItem(
             "Get latest library versions from remote source?",
             params.remoteVersions

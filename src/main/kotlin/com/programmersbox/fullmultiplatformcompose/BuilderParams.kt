@@ -17,6 +17,8 @@ class BuilderParams {
     val ios = IOS()
 
     val compose = Compose()
+    val library = Library()
+
 
     var remoteVersions by mutableStateOf(true)
 }
@@ -32,4 +34,9 @@ class IOS {
 
 class Compose {
     var useMaterial3: Boolean by mutableStateOf(true)
+}
+
+class Library {
+    var useKoin: Boolean by mutableStateOf(false)
+    var useKtor: Boolean by mutableStateOf(false)
 }

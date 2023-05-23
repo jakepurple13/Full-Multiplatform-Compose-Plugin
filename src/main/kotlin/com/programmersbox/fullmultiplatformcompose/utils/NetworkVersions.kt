@@ -44,5 +44,7 @@ data class ProjectVersions(
     val agpVersion: String = "7.3.0",
     val composeVersion: String = "1.3.0",
     val androidxAppCompat: String = "1.6.0",
-    val androidxCore: String = "1.9.0"
+    val androidxCore: String = "1.9.0",
+    val ktor: String = "2.3.0",
+    val koin: String = "3.4.0"
 )
