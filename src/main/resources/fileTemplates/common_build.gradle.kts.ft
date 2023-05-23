@@ -111,6 +111,11 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(compose.web.core)
+
+                #if (${USE_KTOR})
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
+                implementation("io.ktor:ktor-client-json-js:$ktorVersion")
+                #end
             }
         }
         #end
