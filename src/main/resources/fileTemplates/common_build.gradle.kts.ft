@@ -18,10 +18,18 @@ version = "1.0-SNAPSHOT"
 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
 kotlin {
 #if (${HAS_ANDROID})
-    android()
+    androidTarget {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+    }
 #end
 #if (${HAS_DESKTOP})
-    jvm("desktop")
+    jvm("desktop") {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+    }
 #end
 #if (${HAS_WEB})
     js(IR) {
@@ -149,8 +157,8 @@ android {
         targetSdk = 33
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 #end

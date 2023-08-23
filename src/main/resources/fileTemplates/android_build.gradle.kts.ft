@@ -13,22 +13,25 @@ repositories {
 
 dependencies {
     implementation(project(":${SHARED_NAME}"))
-    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation("androidx.activity:activity-compose:1.7.2")
 }
 
 android {
-    compileSdkVersion(33)
+    compileSdk = 33
     defaultConfig {
         applicationId = "${PACKAGE_NAME}.android"
-        minSdkVersion(${MINSDK})
-        targetSdkVersion(33)
+        minSdk = ${MINSDK}
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0-SNAPSHOT"
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_11.toString()
+        }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
