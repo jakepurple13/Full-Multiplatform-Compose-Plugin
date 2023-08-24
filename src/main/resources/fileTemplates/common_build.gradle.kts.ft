@@ -118,7 +118,7 @@ kotlin {
         #if (${HAS_WEB})
         val jsMain by getting {
             dependencies {
-                api(compose.web.core)
+                api(compose.html.core)
 
                 #if (${USE_KTOR})
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
