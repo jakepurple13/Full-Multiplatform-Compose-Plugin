@@ -3,7 +3,10 @@ package com.programmersbox.fullmultiplatformcompose.steps
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -150,5 +153,4 @@ class PlatformOptionsStep(
         params.android.minimumSdk = androidMinimumSdk
         params.ios.appName = iosName
     }
-
 }

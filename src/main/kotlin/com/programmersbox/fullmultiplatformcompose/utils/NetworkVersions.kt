@@ -40,11 +40,11 @@ class NetworkVersions {
 
 @Serializable
 data class ProjectVersions(
-    val kotlinVersion: String = "1.8.0",
+    val kotlinVersion: String = "1.9.0",
     val agpVersion: String = "7.3.0",
-    val composeVersion: String = "1.3.0",
-    val androidxAppCompat: String = "1.6.0",
-    val androidxCore: String = "1.9.0",
-    val ktor: String = "2.3.0",
-    val koin: String = "3.4.0"
+    val composeVersion: String = "1.5.0",
+    val androidxAppCompat: String = "1.6.1",
+    val androidxCore: String = "1.10.1",
+    val ktor: String = "2.3.3",
+    val koin: String = "3.4.0",
 )

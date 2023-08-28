@@ -32,7 +32,6 @@ public fun MainViewController(): UIViewController = ComposeUIViewController {
             Column(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                Spacer(Modifier.height(30.dp))
                 UIShow()
             }
         }

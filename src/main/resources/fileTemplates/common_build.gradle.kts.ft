@@ -52,7 +52,6 @@ kotlin {
             baseName = "${SHARED_NAME}"
             isStatic = true
         }
-        extraSpecAttributes["resources"] = "['src/${SHARED_NAME}Main/resources/**', 'src/iosMain/resources/**']"
     }
 #end
     sourceSets {
