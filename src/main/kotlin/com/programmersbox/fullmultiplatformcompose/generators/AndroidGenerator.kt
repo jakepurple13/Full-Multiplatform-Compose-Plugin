@@ -44,7 +44,8 @@ class AndroidGenerator(
                         "android_manifest.xml",
                         mapOf(
                             PACKAGE_NAME to params.packageName,
-                            "APP_NAME" to params.android.appName
+                            "APP_NAME" to params.android.appName,
+                            "LAST_PACKAGE_NAME" to sanitizedPackageName
                         )
                     )
                 }
@@ -55,7 +56,8 @@ class AndroidGenerator(
                 mapOf(
                     SHARED_NAME to params.sharedName,
                     PACKAGE_NAME to params.packageName,
-                    "MINSDK" to params.android.minimumSdk
+                    "MINSDK" to params.android.minimumSdk,
+                    "LAST_PACKAGE_NAME" to sanitizedPackageName
                 )
             )
         }

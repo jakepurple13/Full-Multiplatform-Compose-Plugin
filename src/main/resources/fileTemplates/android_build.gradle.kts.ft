@@ -14,19 +14,19 @@ repositories {
 android {
     compileSdk = 34
     defaultConfig {
-        applicationId = "${PACKAGE_NAME}.android"
+        applicationId = "${PACKAGE_NAME}.${LAST_PACKAGE_NAME}"
         minSdk = ${MINSDK}
             targetSdk = 34
         versionCode = 1
         versionName = "1.0-SNAPSHOT"
     }
     compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
-        }
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
-        }
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
