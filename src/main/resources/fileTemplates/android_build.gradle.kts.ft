@@ -12,11 +12,11 @@ repositories {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
     defaultConfig {
         applicationId = "${PACKAGE_NAME}.android"
         minSdk = ${MINSDK}
-        targetSdk = 33
+            targetSdk = 34
         versionCode = 1
         versionName = "1.0-SNAPSHOT"
     }

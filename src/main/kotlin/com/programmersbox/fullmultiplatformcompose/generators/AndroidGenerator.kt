@@ -1,6 +1,7 @@
 package com.programmersbox.fullmultiplatformcompose.generators
 
 import com.android.tools.idea.welcome.install.AndroidSdk
+import com.intellij.ide.starters.local.StarterModuleBuilder
 import com.intellij.openapi.vfs.VirtualFile
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
 import com.programmersbox.fullmultiplatformcompose.utils.dir
@@ -8,18 +9,22 @@ import com.programmersbox.fullmultiplatformcompose.utils.file
 import com.programmersbox.fullmultiplatformcompose.utils.packages
 import java.io.File
 
-class AndroidGenerator(params: BuilderParams) : PlatformGenerator(params) {
+class AndroidGenerator(
+    params: BuilderParams,
+    private val projectName: String,
+) : PlatformGenerator(params) {
     override fun setup(root: VirtualFile) {
         AndroidSdk(true)
     }
 
     override fun File.generateProject(packageSegments: List<String>) {
+        val sanitizedPackageName = StarterModuleBuilder.sanitizePackage(projectName)
         dir("android") {
             dir("src") {
                 dir("main") {
                     dir("java") {
                         packages(packageSegments) {
-                            dir("android") {
+                            dir(sanitizedPackageName) {
                                 file(
                                     "MainActivity.kt",
                                     "android_mainactivity.kt",
@@ -27,6 +32,7 @@ class AndroidGenerator(params: BuilderParams) : PlatformGenerator(params) {
                                         SHARED_NAME to params.sharedName,
                                         PACKAGE_NAME to params.packageName,
                                         "USE_MATERIAL3" to params.compose.useMaterial3,
+                                        "LAST_PACKAGE_NAME" to sanitizedPackageName
                                     )
                                 )
                             }

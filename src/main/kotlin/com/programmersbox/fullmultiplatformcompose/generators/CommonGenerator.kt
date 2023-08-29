@@ -32,7 +32,7 @@ class CommonGenerator(
                 .toList()*/
 
             val generatorList = listOfNotNull(
-                if (params.hasAndroid) AndroidGenerator(params) else null,
+                if (params.hasAndroid) AndroidGenerator(params, projectName) else null,
                 if (params.hasDesktop) DesktopGenerator(params) else null,
                 if (params.hasWeb) WebGenerator(params) else null,
                 if (params.hasiOS) IOSGenerator(params) else null

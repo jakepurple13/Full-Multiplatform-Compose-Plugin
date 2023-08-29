@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.programmersbox"
-version = "1.0.22"
+version = "1.0.23"
 
 repositories {
     mavenCentral()

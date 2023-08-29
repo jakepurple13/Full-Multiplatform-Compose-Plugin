@@ -1,4 +1,4 @@
-package ${PACKAGE_NAME}.android
+package ${PACKAGE_NAME}.${LAST_PACKAGE_NAME}
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
