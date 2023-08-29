@@ -13,7 +13,7 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Application
+import androidx.compose.ui.window.ComposeUIViewController
 import platform.UIKit.UIViewController
 
 public actual fun getPlatformName(): String {
@@ -25,7 +25,7 @@ private fun UIShow() {
     App()
 }
 
-public fun MainViewController(): UIViewController = Application("${APP_NAME}") {
+public fun MainViewController(): UIViewController = ComposeUIViewController {
     MaterialTheme(
         colorScheme = if(isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()
     ) {

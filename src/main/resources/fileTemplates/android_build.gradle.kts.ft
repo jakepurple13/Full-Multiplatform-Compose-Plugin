@@ -11,11 +11,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation(project(":${SHARED_NAME}"))
-    implementation("androidx.activity:activity-compose:1.7.2")
-}
-
 android {
     compileSdk = 33
     defaultConfig {
@@ -37,6 +32,11 @@ android {
             isMinifyEnabled = false
         }
     }
+}
+
+dependencies {
+    implementation(project(":${SHARED_NAME}"))
+    implementation("androidx.activity:activity-compose:1.7.2")
 }
 
 tasks.register("BuildAndRun") {
