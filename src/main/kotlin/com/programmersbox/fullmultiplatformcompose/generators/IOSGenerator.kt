@@ -302,9 +302,3 @@ class IOSGenerator(params: BuilderParams) : PlatformGenerator(params) {
         )
     )
 }
-
-/*
-[!] Could not automatically select an Xcode project. Specify one in your Podfile like so:
-    project 'path/to/Project.xcodeproj'
-        Please, check that podfile contains following lines in header:
- */
