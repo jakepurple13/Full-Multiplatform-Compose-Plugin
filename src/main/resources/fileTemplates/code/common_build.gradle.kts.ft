@@ -9,8 +9,12 @@ plugins {
     #end
 }
 
+#if (${USE_KTOR})
 val ktorVersion = extra["ktor.version"]
+#end
+#if (${USE_KOIN})
 val koinVersion = extra["koin.version"]
+#end
 
 group = "${PACKAGE_NAME}"
 version = "1.0-SNAPSHOT"

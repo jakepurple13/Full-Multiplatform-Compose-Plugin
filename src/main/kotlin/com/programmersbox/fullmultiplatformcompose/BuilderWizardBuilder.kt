@@ -27,13 +27,15 @@ import com.programmersbox.fullmultiplatformcompose.generators.SHARED_NAME
 import com.programmersbox.fullmultiplatformcompose.steps.ComposeStarterStep
 import com.programmersbox.fullmultiplatformcompose.steps.PlatformOptionsStep
 import com.programmersbox.fullmultiplatformcompose.utils.NetworkVersions
-import com.programmersbox.fullmultiplatformcompose.utils.runGradle
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.kotlin.idea.KotlinIcons
 import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import java.io.File
 import javax.swing.Icon
 
+/**
+ * Following https://github.com/JetBrains/intellij-community/blob/master/plugins/kotlin/project-wizard/compose/src/org/jetbrains/kotlin/tools/composeProjectWizard/ComposeModuleBuilder.kt
+ */
 class BuilderWizardBuilder : StarterModuleBuilder() {
     val params = BuilderParams()
 
@@ -44,7 +46,7 @@ class BuilderWizardBuilder : StarterModuleBuilder() {
 
     override fun getProjectTypes(): List<StarterProjectType> = emptyList()
 
-    override fun getMinJavaVersion(): JavaVersion = LanguageLevel.JDK_17.toJavaVersion()
+    override fun getMinJavaVersion(): JavaVersion = LanguageLevel.JDK_11.toJavaVersion()
 
     override fun getStarterPack(): StarterPack = StarterPack(
         "compose",
@@ -82,11 +84,6 @@ class BuilderWizardBuilder : StarterModuleBuilder() {
                 )
 
                 formatCode(modifiableRootModel.project, root)
-
-                *//*BuilderConfigurationFactory.createConfigurations(
-                    modifiableRootModel.project,
-                    params
-                )*//*
             }
         }
     }*/
@@ -102,10 +99,6 @@ class BuilderWizardBuilder : StarterModuleBuilder() {
     private fun createAndGetRoot(): VirtualFile? {
         val path = contentEntryPath?.let { FileUtil.toSystemIndependentName(it) } ?: return null
         return LocalFileSystem.getInstance().refreshAndFindFileByPath(File(path).apply { mkdirs() }.absolutePath)
-    }
-
-    private fun installGradleWrapper(project: Project) {
-        project.runGradle("wrapper --gradle-version 7.5.1 --distribution-type all")
     }
 
     override fun createOptionsStep(contextProvider: StarterContextProvider): StarterInitialStep {
@@ -145,7 +138,7 @@ class BuilderWizardBuilder : StarterModuleBuilder() {
 
     override fun getTemplateProperties(): Map<String, Any> {
         val versions = runBlocking { NetworkVersions().getVersions(params.remoteVersions) }
-        val sanitizedPackageName = sanitizePackage(starterContext.name)
+        val sanitizedPackageName = sanitizePackage(starterContext.artifact)
         return mapOf(
             PACKAGE_NAME to starterContext.group,
             SHARED_NAME to params.sharedName,
@@ -163,7 +156,9 @@ class BuilderWizardBuilder : StarterModuleBuilder() {
             "androidxAppCompat" to versions.androidxAppCompat,
             "androidxCore" to versions.androidxCore,
             "LAST_PACKAGE_NAME" to sanitizedPackageName,
-            "MINSDK" to params.android.minimumSdk
+            "MINSDK" to params.android.minimumSdk,
+            "USE_KTOR" to params.library.useKtor,
+            "USE_KOIN" to params.library.useKoin,
         )
     }
 
