@@ -1,6 +1,11 @@
 package com.programmersbox.fullmultiplatformcompose.generators
 
+import com.intellij.ide.fileTemplates.FileTemplateManager
+import com.intellij.ide.starters.local.GeneratorAsset
+import com.intellij.ide.starters.local.GeneratorEmptyDirectory
+import com.intellij.ide.starters.local.GeneratorTemplateFile
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
+import com.programmersbox.fullmultiplatformcompose.BuilderTemplateGroup
 import com.programmersbox.fullmultiplatformcompose.utils.dir
 import com.programmersbox.fullmultiplatformcompose.utils.file
 import java.io.File
@@ -65,5 +70,30 @@ class DesktopGenerator(params: BuilderParams) : PlatformGenerator(params) {
             </component>
             """.trimIndent()
         }
+    }
+}
+
+class DesktopGenerator2(params: BuilderParams) : PlatformGenerator2(params) {
+    override fun generateProject(ftManager: FileTemplateManager, packageName: String): List<GeneratorAsset> {
+        return listOf(
+            GeneratorTemplateFile(
+                "desktop/src/jvmMain/kotlin/Main.kt",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.DESKTOP_MAIN)
+            ),
+            GeneratorEmptyDirectory("desktop/src/jvmMain/resources"),
+            GeneratorTemplateFile(
+                "desktop/build.gradle.kts",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.DESKTOP_BUILD)
+            )
+        )
+    }
+
+    override fun addToCommon(ftManager: FileTemplateManager, packageName: String): List<GeneratorAsset> {
+        return listOf(
+            GeneratorTemplateFile(
+                "${params.sharedName}/src/desktopMain/$packageName/${params.sharedName}/platform.kt",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.DEFAULT_PLATFORM)
+            )
+        )
     }
 }

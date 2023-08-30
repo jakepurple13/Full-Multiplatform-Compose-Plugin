@@ -44,5 +44,6 @@
         <moduleBuilder
                 builderClass="com.programmersbox.fullmultiplatformcompose.BuilderWizardBuilder"
                 order="last"/>
+        <fileTemplateGroup implementation="com.programmersbox.fullmultiplatformcompose.BuilderTemplateGroup"/>
     </extensions>
 </idea-plugin>

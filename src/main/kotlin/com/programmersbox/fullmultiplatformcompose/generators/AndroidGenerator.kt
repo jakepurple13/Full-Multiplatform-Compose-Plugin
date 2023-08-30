@@ -1,9 +1,13 @@
 package com.programmersbox.fullmultiplatformcompose.generators
 
 import com.android.tools.idea.welcome.install.AndroidSdk
+import com.intellij.ide.fileTemplates.FileTemplateManager
+import com.intellij.ide.starters.local.GeneratorAsset
+import com.intellij.ide.starters.local.GeneratorTemplateFile
 import com.intellij.ide.starters.local.StarterModuleBuilder
 import com.intellij.openapi.vfs.VirtualFile
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
+import com.programmersbox.fullmultiplatformcompose.BuilderTemplateGroup
 import com.programmersbox.fullmultiplatformcompose.utils.dir
 import com.programmersbox.fullmultiplatformcompose.utils.file
 import com.programmersbox.fullmultiplatformcompose.utils.packages
@@ -127,5 +131,43 @@ class AndroidGenerator(
             </component>
             """.trimIndent()
         }
+    }
+}
+
+class AndroidGenerator2(params: BuilderParams, private val projectName: String) : PlatformGenerator2(params) {
+
+    override fun setup() {
+        AndroidSdk(true)
+    }
+
+    override fun generateProject(ftManager: FileTemplateManager, packageName: String): List<GeneratorAsset> {
+        val sanitizedPackageName = StarterModuleBuilder.sanitizePackage(projectName)
+        return listOf(
+            GeneratorTemplateFile(
+                "android/src/main/java/$packageName/$sanitizedPackageName/MainActivity.kt",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.ANDROID_MAINACTIVITY)
+            ),
+            GeneratorTemplateFile(
+                "android/src/main/AndroidManifest.xml",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.ANDROID_MANIFEST)
+            ),
+            GeneratorTemplateFile(
+                "android/build.gradle.kts",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.ANDROID_BUILD)
+            ),
+        )
+    }
+
+    override fun addToCommon(ftManager: FileTemplateManager, packageName: String): List<GeneratorAsset> {
+        return listOf(
+            GeneratorTemplateFile(
+                "${params.sharedName}/src/androidMain/$packageName/${params.sharedName}/platform.kt",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.DEFAULT_PLATFORM)
+            ),
+            GeneratorTemplateFile(
+                "${params.sharedName}/src/androidMain/AndroidManifest.xml",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.COMMON_ANDROID_MANIFEST)
+            )
+        )
     }
 }

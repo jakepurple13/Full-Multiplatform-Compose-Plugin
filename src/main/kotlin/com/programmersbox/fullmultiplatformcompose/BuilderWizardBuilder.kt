@@ -1,46 +1,59 @@
+@file:Suppress("UnstableApiUsage")
+
 package com.programmersbox.fullmultiplatformcompose
 
+import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.ide.projectWizard.ProjectSettingsStep
-import com.intellij.ide.util.projectWizard.ModuleBuilder
+import com.intellij.ide.starters.local.*
+import com.intellij.ide.starters.local.wizard.StarterInitialStep
+import com.intellij.ide.starters.shared.KOTLIN_STARTER_LANGUAGE
+import com.intellij.ide.starters.shared.StarterLanguage
+import com.intellij.ide.starters.shared.StarterProjectType
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
-import com.intellij.ide.util.projectWizard.SettingsStep
 import com.intellij.ide.util.projectWizard.WizardContext
-import com.intellij.openapi.Disposable
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.ModuleType
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.ModifiableRootModel
+import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiManager
+import com.intellij.pom.java.LanguageLevel
 import com.intellij.psi.codeStyle.CodeStyleManager
-import com.intellij.psi.impl.file.PsiDirectoryFactory
-import com.intellij.ui.components.Link
+import com.intellij.util.lang.JavaVersion
 import com.programmersbox.fullmultiplatformcompose.generators.CommonGenerator
+import com.programmersbox.fullmultiplatformcompose.generators.PACKAGE_NAME
+import com.programmersbox.fullmultiplatformcompose.generators.SHARED_NAME
+import com.programmersbox.fullmultiplatformcompose.steps.ComposeStarterStep
 import com.programmersbox.fullmultiplatformcompose.steps.PlatformOptionsStep
 import com.programmersbox.fullmultiplatformcompose.utils.NetworkVersions
-import com.programmersbox.fullmultiplatformcompose.utils.backgroundTask
 import com.programmersbox.fullmultiplatformcompose.utils.runGradle
+import kotlinx.coroutines.runBlocking
+import org.jetbrains.kotlin.idea.KotlinIcons
 import org.jetbrains.kotlin.idea.core.util.toPsiFile
-import org.jetbrains.plugins.gradle.service.project.open.linkAndRefreshGradleProject
-import org.jetbrains.skiko.OS
-import org.jetbrains.skiko.hostOs
-import java.awt.Desktop
-import java.awt.event.ItemEvent
 import java.io.File
-import java.net.URI
-import javax.swing.JCheckBox
-import javax.swing.JLabel
-import javax.swing.JSeparator
+import javax.swing.Icon
 
-class BuilderWizardBuilder : ModuleBuilder() {
+class BuilderWizardBuilder : StarterModuleBuilder() {
     val params = BuilderParams()
 
     override fun getModuleType(): ModuleType<*> = BuilderModuleType()
+    override fun getNodeIcon(): Icon = KotlinIcons.Wizard.MULTIPLATFORM
 
-    override fun setupRootModel(modifiableRootModel: ModifiableRootModel) {
+    override fun getPresentableName(): String = "Full Multiplatform Compose"
+
+    override fun getProjectTypes(): List<StarterProjectType> = emptyList()
+
+    override fun getMinJavaVersion(): JavaVersion = LanguageLevel.JDK_17.toJavaVersion()
+
+    override fun getStarterPack(): StarterPack = StarterPack(
+        "compose",
+        listOf(
+            Starter("compose", "Compose", getDependencyConfig("/starters/compose.pom"), emptyList())
+        )
+    )
+
+    /*override fun setupRootModel(modifiableRootModel: ModifiableRootModel) {
         val root = createAndGetRoot() ?: return
         modifiableRootModel.addContentEntry(root)
         modifiableRootModel.sdk = moduleJdk
@@ -70,13 +83,13 @@ class BuilderWizardBuilder : ModuleBuilder() {
 
                 formatCode(modifiableRootModel.project, root)
 
-                /*BuilderConfigurationFactory.createConfigurations(
+                *//*BuilderConfigurationFactory.createConfigurations(
                     modifiableRootModel.project,
                     params
-                )*/
+                )*//*
             }
         }
-    }
+    }*/
 
     private fun formatCode(project: Project, root: VirtualFile) {
         val csm = CodeStyleManager.getInstance(project)
@@ -95,69 +108,95 @@ class BuilderWizardBuilder : ModuleBuilder() {
         project.runGradle("wrapper --gradle-version 7.5.1 --distribution-type all")
     }
 
-    override fun getCustomOptionsStep(context: WizardContext?, parentDisposable: Disposable?): ModuleWizardStep {
-        return ProjectSettingsStep(context)
+    override fun createOptionsStep(contextProvider: StarterContextProvider): StarterInitialStep {
+        return ComposeStarterStep(this, params, contextProvider)
     }
 
     override fun createWizardSteps(
-        wizardContext: WizardContext,
-        modulesProvider: ModulesProvider
+        context: WizardContext,
+        modulesProvider: ModulesProvider,
     ): Array<ModuleWizardStep> {
         return arrayOf(
             PlatformOptionsStep(this),
         )
     }
 
-    override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? {
-        settingsStep.addCheckboxItem("Include Android", params.hasAndroid) { params.hasAndroid = it }
-        if (hostOs == OS.MacOS) {
-            settingsStep.addCheckboxItem("Include iOS", params.hasiOS) { params.hasiOS = it }
-        }
-        settingsStep.addCheckboxItem("Include Desktop", params.hasDesktop) { params.hasDesktop = it }
-        settingsStep.addCheckboxItem("Include Web", params.hasWeb) { params.hasWeb = it }
-        settingsStep.addDivider()
-        settingsStep.addCheckboxItem("Use Material 3", params.compose.useMaterial3) { params.compose.useMaterial3 = it }
+    override fun getAssets(starter: Starter): List<GeneratorAsset> {
+        val ftManager = FileTemplateManager.getInstance(ProjectManager.getInstance().defaultProject)
+        val standardAssetsProvider = StandardAssetsProvider()
 
-        settingsStep.addDivider()
+        return mutableListOf<GeneratorAsset>().apply {
+            val packageName = starterContext.group.split(".").joinToString("/")
 
-        settingsStep.addCheckboxItem("Use Koin for Dependency Injection", params.library.useKoin) { params.library.useKoin = it }
-        settingsStep.addCheckboxItem("Use Ktor for HTTP client apps", params.library.useKtor) { params.library.useKtor = it }
+            operator fun GeneratorAsset.unaryPlus() = add(this)
 
-        settingsStep.addDivider()
+            addAll(standardAssetsProvider.getGradlewAssets())
 
-        settingsStep.addCheckboxItem(
-            "Get latest library versions from remote source?",
-            params.remoteVersions
-        ) { params.remoteVersions = it }
-        settingsStep.addSettingsField("", JLabel().apply { text = "The source is from this plugin's GitHub Repo." })
-
-        settingsStep.addExpertField(
-            "GitHub:",
-            Link(NetworkVersions.githubRepoUrl) { Desktop.getDesktop().browse(URI(NetworkVersions.githubRepoUrl)) }
-        )
-
-        return super.modifySettingsStep(settingsStep)
-    }
-
-    private fun SettingsStep.addDivider() = addSettingsField("", JSeparator())
-
-    private fun SettingsStep.addCheckboxItem(
-        label: String,
-        isChecked: Boolean,
-        selectedChangeListener: (Boolean) -> Unit
-    ) {
-        addSettingsField(
-            "",
-            JCheckBox().apply {
-                text = label
-                isSelected = isChecked
-                addItemListener { selectedChangeListener(it.stateChange == ItemEvent.SELECTED) }
+            if (starterContext.isCreatingNewProject) {
+                addAll(standardAssetsProvider.getGradleIgnoreAssets())
             }
+
+            CommonGenerator(
+                params,
+                starterContext,
+            ).generate(this, ftManager, packageName)
+        }
+    }
+
+    override fun getTemplateProperties(): Map<String, Any> {
+        val versions = runBlocking { NetworkVersions().getVersions(params.remoteVersions) }
+        val sanitizedPackageName = sanitizePackage(starterContext.name)
+        return mapOf(
+            PACKAGE_NAME to starterContext.group,
+            SHARED_NAME to params.sharedName,
+            "APP_NAME" to params.android.appName,
+            params.hasAndroid(),
+            params.hasDesktop(),
+            params.hasIOS(),
+            params.hasWeb(),
+            "USE_MATERIAL3" to params.compose.useMaterial3,
+            "COMPOSE" to versions.composeVersion,
+            "KOTLIN" to versions.kotlinVersion,
+            "AGP" to versions.agpVersion,
+            "KTOR" to versions.ktor,
+            "KOIN" to versions.koin,
+            "androidxAppCompat" to versions.androidxAppCompat,
+            "androidxCore" to versions.androidxCore,
+            "LAST_PACKAGE_NAME" to sanitizedPackageName,
+            "MINSDK" to params.android.minimumSdk
         )
     }
+
+    override fun getBuilderId(): String = BuilderModuleType.ID
+
+    override fun getDescription(): String = """
+        A project wizard to create a compose multiplatform application in your choice of android, ios, web,
+        and/or desktop!
+
+
+        To use, just go to File -> New Project -> Multiplatform Compose; then select what platforms you want to support!
+        Next, change some options like package name and app names! Then! Create! And the entire project will be
+        generated for you!
+
+
+        No more needing to spend hours trying to figure out how to get a full multiplatform project together!
+        No need to copy files from one new project to another to get all the platforms together in one project!
+    """.trimIndent()
 
     override fun getIgnoredSteps(): MutableList<Class<out ModuleWizardStep>> {
         return mutableListOf(ProjectSettingsStep::class.java)
     }
 
+    override fun getLanguages(): List<StarterLanguage> = listOf(KOTLIN_STARTER_LANGUAGE)
+
+    override fun setupModule(module: com.intellij.openapi.module.Module) {
+        starterContext.starter = starterContext.starterPack.starters.first()
+        starterContext.starterDependencyConfig = loadDependencyConfig()[starterContext.starter?.id]
+        super.setupModule(module)
+    }
 }
+
+private fun BuilderParams.hasAndroid() = "HAS_ANDROID" to hasAndroid
+private fun BuilderParams.hasIOS() = "HAS_IOS" to hasiOS
+private fun BuilderParams.hasWeb() = "HAS_WEB" to hasWeb
+private fun BuilderParams.hasDesktop() = "HAS_DESKTOP" to hasDesktop

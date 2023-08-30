@@ -24,11 +24,10 @@ import javax.swing.JComponent
 
 class PlatformOptionsStep(
     private val builder: BuilderWizardBuilder,
-    private val params: BuilderParams = builder.params
+    private val params: BuilderParams = builder.params,
 ) : ModuleWizardStep() {
 
     private var sharedName by mutableStateOf(params.sharedName)
-    private var packageName by mutableStateOf(params.packageName)
 
     private var androidName by mutableStateOf(params.android.appName)
     private var androidMinimumSdk by mutableStateOf(params.android.minimumSdk)
@@ -48,13 +47,6 @@ class PlatformOptionsStep(
                             onValueChange = { sharedName = it },
                             modifier = Modifier.fillMaxWidth(),
                             label = { Text("Shared Name") }
-                        )
-
-                        OutlinedTextField(
-                            value = packageName,
-                            onValueChange = { packageName = it },
-                            modifier = Modifier.fillMaxWidth(),
-                            label = { Text("Package Name") }
                         )
                     }
 
@@ -148,7 +140,6 @@ class PlatformOptionsStep(
 
     override fun updateDataModel() {
         params.sharedName = sharedName
-        params.packageName = packageName
         params.android.appName = androidName
         params.android.minimumSdk = androidMinimumSdk
         params.ios.appName = iosName

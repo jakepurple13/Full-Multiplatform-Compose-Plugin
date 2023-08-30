@@ -66,11 +66,9 @@ kotlin {
                 #else
                 api(compose.material)
                 #end
-
                 #if (${USE_KTOR})
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 #end
-
                 #if (${USE_KOIN})
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 #end
@@ -112,7 +110,6 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(compose.html.core)
-
                 #if (${USE_KTOR})
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
                 implementation("io.ktor:ktor-client-json-js:$ktorVersion")

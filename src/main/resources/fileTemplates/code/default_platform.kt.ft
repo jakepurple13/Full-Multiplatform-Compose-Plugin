@@ -3,7 +3,7 @@ package ${PACKAGE_NAME}.${SHARED_NAME}
 import androidx.compose.runtime.Composable
 
 public actual fun getPlatformName(): String {
-    return "${PLATFORM_TYPE}"
+    return "${context.moduleName}"
 }
 
 @Composable

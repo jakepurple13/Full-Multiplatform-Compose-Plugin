@@ -1,7 +1,12 @@
 package com.programmersbox.fullmultiplatformcompose.generators
 
+import com.intellij.ide.fileTemplates.FileTemplateManager
+import com.intellij.ide.starters.local.GeneratorAsset
+import com.intellij.ide.starters.local.GeneratorTemplateFile
+import com.intellij.ide.starters.local.StarterContext
 import com.intellij.openapi.vfs.VirtualFile
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
+import com.programmersbox.fullmultiplatformcompose.BuilderTemplateGroup
 import com.programmersbox.fullmultiplatformcompose.utils.*
 import kotlinx.coroutines.runBlocking
 
@@ -10,7 +15,64 @@ internal const val PACKAGE_NAME = "PACKAGE_NAME"
 
 class CommonGenerator(
     private val params: BuilderParams,
-    private val projectName: String
+    private val starterContext: StarterContext,
+) {
+    fun generate(
+        list: MutableList<GeneratorAsset>,
+        ftManager: FileTemplateManager,
+        packageName: String,
+    ) = list.apply {
+        operator fun GeneratorAsset.unaryPlus() = add(this)
+
+        val generatorList: List<PlatformGenerator2> = listOfNotNull(
+            if (params.hasAndroid) AndroidGenerator2(params, starterContext.name) else null,
+            if (params.hasDesktop) DesktopGenerator2(params) else null,
+            if (params.hasWeb) WebGenerator2(params) else null,
+            if (params.hasiOS) IOSGenerator2(params) else null
+        )
+
+        //Project
+        +GeneratorTemplateFile(
+            "build.gradle.kts",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.COMPOSE_PROJECT_GRADLE)
+        )
+
+        +GeneratorTemplateFile(
+            "settings.gradle.kts",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.PROJECT_SETTINGS)
+        )
+
+        +GeneratorTemplateFile(
+            "gradle.properties",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.PROJECT_GRADLE)
+        )
+
+        //Common
+        +GeneratorTemplateFile(
+            "${params.sharedName}/src/commonMain/kotlin/$packageName/${params.sharedName}/App.kt",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.COMMON_APP)
+        )
+
+        +GeneratorTemplateFile(
+            "${params.sharedName}/src/commonMain/kotlin/$packageName/${params.sharedName}/platform.kt",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.COMMON_PLATFORM)
+        )
+
+        +GeneratorTemplateFile(
+            "${params.sharedName}/build.gradle.kts",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.COMMON_BUILD)
+        )
+
+        addAll(generatorList.flatMap { it.commonFiles(ftManager, packageName) })
+        addAll(generatorList.flatMap { it.generate(ftManager, packageName) })
+
+        generatorList.forEach { it.setup() }
+    }
+}
+
+class CommonGenerator2(
+    private val params: BuilderParams,
+    private val projectName: String,
 ) {
 
     private val network = NetworkVersions()
