@@ -129,10 +129,7 @@ class BuilderWizardBuilder : StarterModuleBuilder() {
                 addAll(standardAssetsProvider.getGradleIgnoreAssets())
             }
 
-            CommonGenerator(
-                params,
-                starterContext,
-            ).generate(this, ftManager, packageName)
+            CommonGenerator(params, starterContext).generate(this, ftManager, packageName)
         }
     }
 
@@ -142,7 +139,7 @@ class BuilderWizardBuilder : StarterModuleBuilder() {
         return mapOf(
             PACKAGE_NAME to starterContext.group,
             SHARED_NAME to params.sharedName,
-            "APP_NAME" to params.android.appName,
+            "APP_NAME" to starterContext.artifact,
             params.hasAndroid(),
             params.hasDesktop(),
             params.hasIOS(),

@@ -67,7 +67,7 @@ class CommonGenerator(
 
         addAll(generatorList.flatMap { it.commonFiles(ftManager, packageName) })
         addAll(generatorList.flatMap { it.generate(ftManager, packageName) })
-        addAll(generatorList.flatMap { it.addRunConfiguration(ftManager, packageName) })
+        addAll(generatorList.flatMap { it.addRunConfiguration(ftManager, starterContext.artifact) })
 
         generatorList.forEach { it.setup() }
     }

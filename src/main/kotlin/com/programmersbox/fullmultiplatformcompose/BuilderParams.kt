@@ -25,7 +25,6 @@ class BuilderParams {
 
 class Android {
     var minimumSdk: Int by mutableStateOf(24)
-    var appName: String by mutableStateOf("My Application")
 }
 
 class IOS {

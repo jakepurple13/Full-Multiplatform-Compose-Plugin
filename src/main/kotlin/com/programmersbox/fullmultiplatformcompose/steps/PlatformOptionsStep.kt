@@ -29,7 +29,6 @@ class PlatformOptionsStep(
 
     private var sharedName by mutableStateOf(params.sharedName)
 
-    private var androidName by mutableStateOf(params.android.appName)
     private var androidMinimumSdk by mutableStateOf(params.android.minimumSdk)
 
     private var iosName by mutableStateOf(params.ios.appName)
@@ -51,13 +50,6 @@ class PlatformOptionsStep(
                     }
 
                     CreationItem("Android", params.hasAndroid) {
-                        OutlinedTextField(
-                            value = androidName,
-                            onValueChange = { androidName = it },
-                            modifier = Modifier.fillMaxWidth(),
-                            label = { Text("App Name") }
-                        )
-
                         OutlinedTextField(
                             value = androidMinimumSdk.toString(),
                             onValueChange = { androidMinimumSdk = it.toInt().coerceIn(1, 33) },
@@ -140,7 +132,6 @@ class PlatformOptionsStep(
 
     override fun updateDataModel() {
         params.sharedName = sharedName
-        params.android.appName = androidName
         params.android.minimumSdk = androidMinimumSdk
         params.ios.appName = iosName
     }
