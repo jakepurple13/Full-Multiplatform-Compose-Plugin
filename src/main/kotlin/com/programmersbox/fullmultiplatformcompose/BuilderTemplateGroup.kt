@@ -29,6 +29,7 @@ internal class BuilderTemplateGroup : FileTemplateGroupDescriptorFactory {
             addTemplate(PROJECT_GRADLE)
             addTemplate(PROJECT_SETTINGS)
             addTemplate(COMMON_ANDROID_MANIFEST)
+            addTemplate(PROJECT_TOML)
         }
 
         return root
@@ -55,5 +56,6 @@ internal class BuilderTemplateGroup : FileTemplateGroupDescriptorFactory {
         const val PROJECT_GRADLE = "project_gradle.properties"
         const val PROJECT_SETTINGS = "project_settings.gradle.kts"
         const val COMMON_ANDROID_MANIFEST = "common_android_manifest.xml"
+        const val PROJECT_TOML = "libs.versions.toml"
     }
 }

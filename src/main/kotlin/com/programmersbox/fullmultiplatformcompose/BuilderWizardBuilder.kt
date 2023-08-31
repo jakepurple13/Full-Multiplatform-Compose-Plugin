@@ -167,15 +167,6 @@ class BuilderWizardBuilder : StarterModuleBuilder() {
     override fun getDescription(): String = """
         A project wizard to create a compose multiplatform application in your choice of android, ios, web,
         and/or desktop!
-
-
-        To use, just go to File -> New Project -> Multiplatform Compose; then select what platforms you want to support!
-        Next, change some options like package name and app names! Then! Create! And the entire project will be
-        generated for you!
-
-
-        No more needing to spend hours trying to figure out how to get a full multiplatform project together!
-        No need to copy files from one new project to another to get all the platforms together in one project!
     """.trimIndent()
 
     override fun getIgnoredSteps(): MutableList<Class<out ModuleWizardStep>> {

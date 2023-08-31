@@ -44,6 +44,11 @@ class CommonGenerator(
             ftManager.getCodeTemplate(BuilderTemplateGroup.PROJECT_GRADLE)
         )
 
+        +GeneratorTemplateFile(
+            "gradle/libs.versions.toml",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.PROJECT_TOML)
+        )
+
         //Common
         +GeneratorTemplateFile(
             "${params.sharedName}/src/commonMain/kotlin/$packageName/${params.sharedName}/App.kt",

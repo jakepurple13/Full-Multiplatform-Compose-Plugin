@@ -1,0 +1,42 @@
+[versions]
+kotlin-version = "${KOTLIN}"
+#if (${HAS_ANDROID})
+agp-version = "${AGP}"
+#end
+compose-version = "${COMPOSE}"
+#if (${USE_KTOR})
+ktor-version = "${KTOR}"
+#end
+#if (${USE_KOIN})
+koin-version = "${KOIN}"
+#end
+
+[plugins]
+#if (${HAS_ANDROID})
+android-application = { id = "com.android.application", version.ref = "agp.version" }
+android-library = { id = "com.android.library", version.ref = "agp.version" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin.version" }
+#end
+
+[libraries]
+#if (${USE_KTOR})
+ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor.version" }
+    #if (${HAS_ANDROID} || ${HAS_DESKTOP})
+    ktor-jvm = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor.version" }
+    #end
+    #if(${HAS_WEB})
+    ktor-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor.version" }
+    ktor-jsonjs = { module = "io.ktor:ktor-client-json-js", version.ref = "ktor.version" }
+    #end
+    #if (${HAS_IOS})
+    ktor-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor.version" }
+    #end
+#end
+#if (${USE_KOIN})
+koinCore = { module = "io.insert-koin:koin-core", version.ref = "koin.version" }
+#end
+#if (${HAS_ANDROID})
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "${androidxAppCompat}" }
+androidx-core = { module = "androidx.core:core-ktx", version = "${androidxCore}" }
+androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
+#end
