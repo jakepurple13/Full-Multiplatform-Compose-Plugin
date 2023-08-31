@@ -36,7 +36,7 @@ android {
 
 dependencies {
     implementation(project(":${SHARED_NAME}"))
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation(libs.androidx.activity.compose)
 }
 
 tasks.register("BuildAndRun") {

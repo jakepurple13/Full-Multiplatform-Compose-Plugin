@@ -9,9 +9,6 @@ plugins {
     #end
 }
 
-val ktorVersion = extra["ktor.version"]
-val koinVersion = extra["koin.version"]
-
 group = "${PACKAGE_NAME}"
 version = "1.0-SNAPSHOT"
 
@@ -66,13 +63,11 @@ kotlin {
                 #else
                 api(compose.material)
                 #end
-
                 #if (${USE_KTOR})
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                    implementation(libs.ktor.core)
                 #end
-
                 #if (${USE_KOIN})
-                implementation("io.insert-koin:koin-core:$koinVersion")
+                    implementation(libs.koinCore)
                 #end
             }
         }
@@ -86,10 +81,10 @@ kotlin {
         #if (${HAS_ANDROID})
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:${androidxAppCompat}")
-                api("androidx.core:core-ktx:${androidxCore}")
+                api(libs.androidx.appcompat)
+                api(libs.androidx.core)
                 #if (${USE_KTOR})
-                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation(libs.ktor.jvm)
                 #end
             }
         }
@@ -100,7 +95,7 @@ kotlin {
             dependencies {
                 api(compose.preview)
                 #if (${USE_KTOR})
-                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                    implementation(libs.ktor.jvm)
                 #end
             }
         }
@@ -112,10 +107,9 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(compose.html.core)
-
                 #if (${USE_KTOR})
-                implementation("io.ktor:ktor-client-js:$ktorVersion")
-                implementation("io.ktor:ktor-client-json-js:$ktorVersion")
+                    implementation(libs.ktor.js)
+                    implementation(libs.ktor.jsonjs)
                 #end
             }
         }
@@ -128,7 +122,7 @@ kotlin {
         val iosMain by getting {
             dependencies {
                 #if (${USE_KTOR})
-                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+                    implementation(libs.ktor.ios)
                 #end
             }
             iosX64Main.dependsOn(this)

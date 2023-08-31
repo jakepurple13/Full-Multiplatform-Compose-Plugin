@@ -2,6 +2,8 @@ package com.programmersbox.fullmultiplatformcompose.utils
 
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.ide.fileTemplates.FileTemplateManager
+import com.intellij.ide.fileTemplates.FileTemplateUtil
+import com.intellij.ide.starters.local.GeneratorTemplateFile
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.plugins.gradle.action.GradleExecuteTaskAction
@@ -84,6 +86,22 @@ fun String.insertAfter(after: Regex, insert: String): String {
         this
     }
 
+}
+
+fun GeneratorTemplateFile(
+    targetFileName: String,
+    content: () -> String,
+): GeneratorTemplateFile {
+    val file = File(targetFileName)
+    return GeneratorTemplateFile(
+        targetFileName,
+        FileTemplateUtil.createTemplate(
+            file.nameWithoutExtension,
+            file.extension,
+            content(),
+            emptyArray()
+        )
+    )
 }
 
 object TemplateAttributes {

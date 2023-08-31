@@ -1,165 +1,74 @@
 package com.programmersbox.fullmultiplatformcompose.generators
 
-import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.ide.fileTemplates.FileTemplateManager
+import com.intellij.ide.starters.local.GeneratorAsset
+import com.intellij.ide.starters.local.GeneratorTemplateFile
+import com.intellij.ide.starters.local.StarterContext
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
-import com.programmersbox.fullmultiplatformcompose.utils.*
-import kotlinx.coroutines.runBlocking
+import com.programmersbox.fullmultiplatformcompose.BuilderTemplateGroup
 
 internal const val SHARED_NAME = "SHARED_NAME"
 internal const val PACKAGE_NAME = "PACKAGE_NAME"
 
 class CommonGenerator(
     private val params: BuilderParams,
-    private val projectName: String
+    private val starterContext: StarterContext,
 ) {
-
-    private val network = NetworkVersions()
-
-    private fun BuilderParams.hasAndroid() = "HAS_ANDROID" to hasAndroid
-    private fun BuilderParams.hasIOS() = "HAS_IOS" to hasiOS
-    private fun BuilderParams.hasWeb() = "HAS_WEB" to hasWeb
-    private fun BuilderParams.hasDesktop() = "HAS_DESKTOP" to hasDesktop
-
     fun generate(
-        root: VirtualFile,
-    ) {
-        try {
-            val packageSegments = params.packageName.split(".")
-            /*groupId
-                .split(".")
-                .toMutableList()
-                .apply { add(artifactId) }
-                .toList()*/
+        list: MutableList<GeneratorAsset>,
+        ftManager: FileTemplateManager,
+        packageName: String,
+    ) = list.apply {
+        operator fun GeneratorAsset.unaryPlus() = add(this)
 
-            val generatorList = listOfNotNull(
-                if (params.hasAndroid) AndroidGenerator(params, projectName) else null,
-                if (params.hasDesktop) DesktopGenerator(params) else null,
-                if (params.hasWeb) WebGenerator(params) else null,
-                if (params.hasiOS) IOSGenerator(params) else null
-            )
+        val generatorList: List<PlatformGenerator> = listOfNotNull(
+            if (params.hasAndroid) AndroidGenerator(params, starterContext.artifact) else null,
+            if (params.hasDesktop) DesktopGenerator(params) else null,
+            if (params.hasWeb) WebGenerator(params) else null,
+            if (params.hasiOS) IOSGenerator(params) else null
+        )
 
-            root.build {
-                file(
-                    "build.gradle.kts",
-                    "project_build.gradle.kts",
-                    mapOf(
-                        PACKAGE_NAME to params.packageName,
-                        "APP_NAME" to params.android.appName,
-                        params.hasAndroid(),
-                        params.hasDesktop(),
-                        params.hasIOS(),
-                        params.hasWeb(),
-                    )
-                )
+        //Project
+        +GeneratorTemplateFile(
+            "build.gradle.kts",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.COMPOSE_PROJECT_GRADLE)
+        )
 
-                file(
-                    "settings.gradle.kts",
-                    "project_settings.gradle.kts",
-                    mapOf(
-                        PACKAGE_NAME to params.packageName,
-                        SHARED_NAME to params.sharedName,
-                        "APP_NAME" to projectName,
-                        params.hasAndroid(),
-                        params.hasDesktop(),
-                        params.hasIOS(),
-                        params.hasWeb(),
-                    )
-                )
+        +GeneratorTemplateFile(
+            "settings.gradle.kts",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.PROJECT_SETTINGS)
+        )
 
-                val versions = runBlocking { network.getVersions(params.remoteVersions) }
+        +GeneratorTemplateFile(
+            "gradle.properties",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.PROJECT_GRADLE)
+        )
 
-                file(
-                    "gradle.properties",
-                    "project_gradle.properties",
-                    mapOf(
-                        "COMPOSE" to versions.composeVersion,
-                        "KOTLIN" to versions.kotlinVersion,
-                        "AGP" to versions.agpVersion,
-                        "KTOR" to versions.ktor,
-                        "KOIN" to versions.koin
-                    )
-                )
+        +GeneratorTemplateFile(
+            "gradle/libs.versions.toml",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.PROJECT_TOML)
+        )
 
-                dir(params.sharedName) {
-                    dir("src") {
-                        dir("commonMain") {
-                            dir("kotlin") {
-                                packages(packageSegments) {
-                                    dir(params.sharedName) {
-                                        file(
-                                            "platform.kt",
-                                            "common_platform.kt",
-                                            mapOf(
-                                                SHARED_NAME to params.sharedName,
-                                                PACKAGE_NAME to params.packageName,
-                                            )
-                                        )
+        //Common
+        +GeneratorTemplateFile(
+            "${params.sharedName}/src/commonMain/kotlin/$packageName/${params.sharedName}/App.kt",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.COMMON_APP)
+        )
 
-                                        file(
-                                            "App.kt",
-                                            "common_app.kt",
-                                            mapOf(
-                                                SHARED_NAME to params.sharedName,
-                                                PACKAGE_NAME to params.packageName,
-                                                "USE_MATERIAL3" to params.compose.useMaterial3,
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-                        }
+        +GeneratorTemplateFile(
+            "${params.sharedName}/src/commonMain/kotlin/$packageName/${params.sharedName}/platform.kt",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.COMMON_PLATFORM)
+        )
 
-                        generatorList.forEach { it.commonFiles(this, packageSegments) }
-                    }
+        +GeneratorTemplateFile(
+            "${params.sharedName}/build.gradle.kts",
+            ftManager.getCodeTemplate(BuilderTemplateGroup.COMMON_BUILD)
+        )
 
-                    file(
-                        "build.gradle.kts",
-                        "common_build.gradle.kts",
-                        mapOf(
-                            SHARED_NAME to params.sharedName,
-                            PACKAGE_NAME to params.packageName,
-                            "MINSDK" to params.android.minimumSdk,
-                            params.hasAndroid(),
-                            params.hasDesktop(),
-                            params.hasIOS(),
-                            params.hasWeb(),
-                            "USE_MATERIAL3" to params.compose.useMaterial3,
-                            "androidxAppCompat" to versions.androidxAppCompat,
-                            "androidxCore" to versions.androidxCore,
-                            "USE_KTOR" to params.library.useKtor,
-                            "USE_KOIN" to params.library.useKoin,
-                        )
-                    )
-                }
+        addAll(generatorList.flatMap { it.commonFiles(ftManager, packageName) })
+        addAll(generatorList.flatMap { it.generate(ftManager, packageName) })
+        addAll(generatorList.flatMap { it.addRunConfiguration(ftManager, starterContext.artifact) })
 
-                generatorList.forEach { it.generate(this, packageSegments) }
-
-                dir(".idea") {
-                    arrayOf("gradle.xml").forEach { fileName ->
-                        file(
-                            fileName,
-                            "idea_${fileName}",
-                            mapOf(
-                                SHARED_NAME to params.sharedName,
-                                PACKAGE_NAME to params.packageName,
-                                params.hasAndroid(),
-                                params.hasDesktop(),
-                                params.hasIOS(),
-                                params.hasWeb(),
-                            )
-                        )
-                    }
-                }
-
-                dir(".run") {
-                    generatorList.forEach { it.addRunConfiguration(this, projectName) }
-                }
-            }
-            root.refresh(false, true)
-            generatorList.forEach { it.setup(root) }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            println(ex)
-        }
+        generatorList.forEach { it.setup() }
     }
 }

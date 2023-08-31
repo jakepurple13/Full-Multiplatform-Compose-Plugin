@@ -1,92 +1,55 @@
 package com.programmersbox.fullmultiplatformcompose.generators
 
 import com.android.tools.idea.welcome.install.AndroidSdk
+import com.intellij.ide.fileTemplates.FileTemplateManager
+import com.intellij.ide.starters.local.GeneratorAsset
+import com.intellij.ide.starters.local.GeneratorTemplateFile
 import com.intellij.ide.starters.local.StarterModuleBuilder
-import com.intellij.openapi.vfs.VirtualFile
 import com.programmersbox.fullmultiplatformcompose.BuilderParams
-import com.programmersbox.fullmultiplatformcompose.utils.dir
-import com.programmersbox.fullmultiplatformcompose.utils.file
-import com.programmersbox.fullmultiplatformcompose.utils.packages
-import java.io.File
+import com.programmersbox.fullmultiplatformcompose.BuilderTemplateGroup
+import com.programmersbox.fullmultiplatformcompose.utils.GeneratorTemplateFile
 
-class AndroidGenerator(
-    params: BuilderParams,
-    private val projectName: String,
-) : PlatformGenerator(params) {
-    override fun setup(root: VirtualFile) {
+class AndroidGenerator(params: BuilderParams, private val projectName: String) : PlatformGenerator(params) {
+
+    override fun setup() {
         AndroidSdk(true)
     }
 
-    override fun File.generateProject(packageSegments: List<String>) {
+    override fun generateProject(ftManager: FileTemplateManager, packageName: String): List<GeneratorAsset> {
         val sanitizedPackageName = StarterModuleBuilder.sanitizePackage(projectName)
-        dir("android") {
-            dir("src") {
-                dir("main") {
-                    dir("java") {
-                        packages(packageSegments) {
-                            dir(sanitizedPackageName) {
-                                file(
-                                    "MainActivity.kt",
-                                    "android_mainactivity.kt",
-                                    mapOf(
-                                        SHARED_NAME to params.sharedName,
-                                        PACKAGE_NAME to params.packageName,
-                                        "USE_MATERIAL3" to params.compose.useMaterial3,
-                                        "LAST_PACKAGE_NAME" to sanitizedPackageName
-                                    )
-                                )
-                            }
-                        }
-                        dir("res")
-                    }
-                    file(
-                        "AndroidManifest.xml",
-                        "android_manifest.xml",
-                        mapOf(
-                            PACKAGE_NAME to params.packageName,
-                            "APP_NAME" to params.android.appName,
-                            "LAST_PACKAGE_NAME" to sanitizedPackageName
-                        )
-                    )
-                }
-            }
-            file(
-                "build.gradle.kts",
-                "android_build.gradle.kts",
-                mapOf(
-                    SHARED_NAME to params.sharedName,
-                    PACKAGE_NAME to params.packageName,
-                    "MINSDK" to params.android.minimumSdk,
-                    "LAST_PACKAGE_NAME" to sanitizedPackageName
-                )
-            )
-        }
+        return listOf(
+            GeneratorTemplateFile(
+                "android/src/main/java/$packageName/$sanitizedPackageName/MainActivity.kt",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.ANDROID_MAINACTIVITY)
+            ),
+            GeneratorTemplateFile(
+                "android/src/main/AndroidManifest.xml",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.ANDROID_MANIFEST)
+            ),
+            GeneratorTemplateFile(
+                "android/build.gradle.kts",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.ANDROID_BUILD)
+            ),
+        )
     }
 
-    override fun File.addToCommon(packageSegments: List<String>) {
-        dir("androidMain") {
-            packageFilesToPlatformKt(
-                packageSegments,
-                "default_platform.kt",
-                mapOf(
-                    SHARED_NAME to params.sharedName,
-                    PACKAGE_NAME to params.packageName,
-                    "PLATFORM_TYPE" to "Android"
-                )
-            ) { dir("resources") }
-
-            file(
-                "AndroidManifest.xml",
-                """
-                <?xml version="1.0" encoding="utf-8"?>
-                <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="${params.packageName}.${params.sharedName}"/>
-                """.trimIndent()
+    override fun addToCommon(ftManager: FileTemplateManager, packageName: String): List<GeneratorAsset> {
+        return listOf(
+            GeneratorTemplateFile(
+                "${params.sharedName}/src/androidMain/kotlin/$packageName/${params.sharedName}/platform.kt",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.DEFAULT_PLATFORM)
+            ),
+            GeneratorTemplateFile(
+                "${params.sharedName}/src/androidMain/AndroidManifest.xml",
+                ftManager.getCodeTemplate(BuilderTemplateGroup.COMMON_ANDROID_MANIFEST)
             )
-        }
+        )
     }
 
-    override fun File.addRunConfig(projectName: String) {
-        file("android.run.xml") {
+    override fun addRunConfig(ftManager: FileTemplateManager, projectName: String): List<GeneratorAsset> = listOf(
+        GeneratorTemplateFile(
+            ".run/android.run.xml"
+        ) {
             """
             <component name="ProjectRunConfigurationManager">
               <configuration default="false" name="android" type="AndroidRunConfigurationType" factoryName="Android App">
@@ -127,5 +90,5 @@ class AndroidGenerator(
             </component>
             """.trimIndent()
         }
-    }
+    )
 }
