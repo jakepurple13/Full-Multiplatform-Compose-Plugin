@@ -85,7 +85,6 @@ fun String.insertAfter(after: Regex, insert: String): String {
     } else {
         this
     }
-
 }
 
 fun GeneratorTemplateFile(

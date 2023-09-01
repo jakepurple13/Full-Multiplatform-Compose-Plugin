@@ -45,6 +45,6 @@ data class ProjectVersions(
     val composeVersion: String = "1.5.0",
     val androidxAppCompat: String = "1.6.1",
     val androidxCore: String = "1.10.1",
-    val ktor: String = "2.3.3",
+    val ktor: String = "2.3.4",
     val koin: String = "3.4.0",
 )

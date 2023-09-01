@@ -4,6 +4,6 @@
   "composeVersion": "1.5.0",
   "androidxAppCompat": "1.6.1",
   "androidxCore": "1.10.1",
-  "ktor": "2.3.3",
+  "ktor": "2.3.4",
   "koin": "3.4.0"
 }

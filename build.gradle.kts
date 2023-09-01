@@ -42,7 +42,7 @@ dependencies {
     implementation(compose.desktop.windows_x64)
     implementation(compose.desktop.common)
     implementation(compose.materialIconsExtended)
-    val ktorVersion = "2.2.2"
+    val ktorVersion = "2.3.4"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
