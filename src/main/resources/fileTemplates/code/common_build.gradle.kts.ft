@@ -64,10 +64,10 @@ kotlin {
                 api(compose.material)
                 #end
                 #if (${USE_KTOR})
-                    implementation(libs.ktor.core)
+                    api(libs.ktor.core)
                 #end
                 #if (${USE_KOIN})
-                    implementation(libs.koinCore)
+                    api(libs.koinCore)
                 #end
             }
         }
@@ -84,7 +84,7 @@ kotlin {
                 api(libs.androidx.appcompat)
                 api(libs.androidx.core)
                 #if (${USE_KTOR})
-                    implementation(libs.ktor.jvm)
+                    api(libs.ktor.jvm)
                 #end
             }
         }
@@ -95,7 +95,7 @@ kotlin {
             dependencies {
                 api(compose.preview)
                 #if (${USE_KTOR})
-                    implementation(libs.ktor.jvm)
+                    api(libs.ktor.jvm)
                 #end
             }
         }
@@ -108,8 +108,8 @@ kotlin {
             dependencies {
                 api(compose.html.core)
                 #if (${USE_KTOR})
-                    implementation(libs.ktor.js)
-                    implementation(libs.ktor.jsonjs)
+                    api(libs.ktor.js)
+                    api(libs.ktor.jsonjs)
                 #end
             }
         }
@@ -122,7 +122,7 @@ kotlin {
         val iosMain by getting {
             dependencies {
                 #if (${USE_KTOR})
-                    implementation(libs.ktor.ios)
+                    api(libs.ktor.ios)
                 #end
             }
             iosX64Main.dependsOn(this)

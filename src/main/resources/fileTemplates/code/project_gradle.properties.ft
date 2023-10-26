@@ -7,7 +7,6 @@ kotlin.native.binary.memoryModel=experimental
 kotlin.mpp.enableCInteropCommonization=true
 xcodeproj=iosApp
 kotlin.native.cocoapods.generate.wrapper=true
-kotlin.native.cacheKind=none
 kotlin.native.useEmbeddableCompilerJar=true
 android.useAndroidX=true
 org.gradle.jvmargs=-Xmx2048M -Dfile.encoding=UTF-8 -Dkotlin.daemon.jvm.options\="-Xmx2048M"
