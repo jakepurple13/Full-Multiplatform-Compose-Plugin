@@ -1,6 +1,7 @@
 package com.programmersbox.fullmultiplatformcompose.utils
 
 import io.ktor.client.*
+import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -22,7 +23,7 @@ class NetworkVersions {
         coerceInputValues = true
     }
 
-    private val client = HttpClient {
+    private val client = HttpClient(CIO) {
         install(ContentNegotiation) { json(json) }
     }
 
@@ -40,11 +41,11 @@ class NetworkVersions {
 
 @Serializable
 data class ProjectVersions(
-    val kotlinVersion: String = "1.9.0",
+    val kotlinVersion: String = "1.9.10",
     val agpVersion: String = "7.3.0",
-    val composeVersion: String = "1.5.0",
+    val composeVersion: String = "1.5.10",
     val androidxAppCompat: String = "1.6.1",
     val androidxCore: String = "1.10.1",
-    val ktor: String = "2.3.5",
+    val ktor: String = "2.3.6",
     val koin: String = "3.4.0",
 )

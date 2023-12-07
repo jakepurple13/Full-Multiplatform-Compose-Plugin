@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.programmersbox"
-version = "1.0.24"
+version = "1.0.25"
 
 repositories {
     mavenCentral()
@@ -42,7 +42,8 @@ dependencies {
     implementation(compose.desktop.windows_x64)
     implementation(compose.desktop.common)
     implementation(compose.materialIconsExtended)
-    val ktorVersion = "2.3.4"
+    val ktorVersion = "2.3.7"
+    implementation("io.ktor:ktor-client-cio-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
@@ -65,7 +66,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("221")
-        untilBuild.set("232.*")
+        untilBuild.set("233.*")
     }
 
     signPlugin {
@@ -76,5 +77,9 @@ tasks {
 
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
+    }
+
+    configurations.all {
+        exclude("org.slf4j", "slf4j-api")
     }
 }
