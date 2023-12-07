@@ -1,6 +1,7 @@
 package com.programmersbox.fullmultiplatformcompose.utils
 
 import io.ktor.client.*
+import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -22,7 +23,7 @@ class NetworkVersions {
         coerceInputValues = true
     }
 
-    private val client = HttpClient {
+    private val client = HttpClient(CIO) {
         install(ContentNegotiation) { json(json) }
     }
 

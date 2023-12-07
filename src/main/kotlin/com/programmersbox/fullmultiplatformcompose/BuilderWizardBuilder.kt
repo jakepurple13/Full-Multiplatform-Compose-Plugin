@@ -38,6 +38,7 @@ import javax.swing.Icon
  */
 class BuilderWizardBuilder : StarterModuleBuilder() {
     val params = BuilderParams()
+    private val network = NetworkVersions()
 
     override fun getModuleType(): ModuleType<*> = BuilderModuleType()
     override fun getNodeIcon(): Icon = KotlinIcons.Wizard.MULTIPLATFORM
@@ -134,7 +135,7 @@ class BuilderWizardBuilder : StarterModuleBuilder() {
     }
 
     override fun getTemplateProperties(): Map<String, Any> {
-        val versions = runBlocking { NetworkVersions().getVersions(params.remoteVersions) }
+        val versions = runBlocking { network.getVersions(params.remoteVersions) }
         val sanitizedPackageName = sanitizePackage(starterContext.artifact)
         return mapOf(
             PACKAGE_NAME to starterContext.group,
