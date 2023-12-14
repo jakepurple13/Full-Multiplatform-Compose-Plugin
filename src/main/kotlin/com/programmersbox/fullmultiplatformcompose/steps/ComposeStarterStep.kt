@@ -56,7 +56,9 @@ class ComposeStarterStep(
         }
     }
 
-    private fun Panel.addDivider() = separator()
+    private fun Panel.addDivider() {
+        //separator()
+    }
 
     private fun Panel.addCheckboxItem(
         label: String,
