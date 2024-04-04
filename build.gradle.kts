@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.programmersbox"
-version = "1.0.27"
+version = "1.0.28"
 
 repositories {
     mavenCentral()
@@ -66,7 +66,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("221")
-        //untilBuild.set("233.*")
+        untilBuild.set("241.*")
     }
 
     signPlugin {
